@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: /login
+Disallow: /logout
+Disallow: /auth
+Disallow: /api
+
+User-agent: GPTBot
+Disallow: /

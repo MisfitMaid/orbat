@@ -1,0 +1,9 @@
+[submodule "css/bulma"]
+	path = css/bulma
+	url = https://github.com/jgthms/bulma.git
+[submodule "css/forkawesome"]
+	path = css/forkawesome
+	url = https://github.com/ForkAwesome/Fork-Awesome.git
+[submodule "nin"]
+	path = nin
+	url = https://github.com/sylae/nin.git

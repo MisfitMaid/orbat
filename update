@@ -1,0 +1,16 @@
+#!/bin/sh -x
+
+#
+# Copyright (c) 2023 Keira Dueck <sylae@calref.net>
+# Use of this source code is governed by the MIT license, which
+# can be found in the LICENSE file.
+#
+
+git pull --recurse-submodules
+composer install --no-progress
+sass --quiet-deps -c -s compressed css/wormrp.scss css/wormrp.css
+sass --quiet-deps -c -s compressed css/light.scss css/light.css
+sass --quiet-deps -c -s compressed css/dark.scss css/dark.css
+
+git describe --tags --dirty --always > GIT_DESCRIBE
+git rev-parse HEAD > GIT_HASH
