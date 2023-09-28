@@ -5,7 +5,7 @@
  * can be found in the LICENSE file.
  */
 
-namespace WormRP {
+namespace Orbat {
 
     require_once __DIR__ . '/vendor/autoload.php';
     include_once __DIR__ . '/nin/nf.php';

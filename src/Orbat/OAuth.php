@@ -19,7 +19,7 @@ class OAuth
         $this->provider = new Discord([
             'clientId' => nf_param('discord.id'),
             'clientSecret' => nf_param('discord.secret'),
-            'redirectUri' => PHP_SAPI == 'cli-server' ? 'http://localhost:8000/auth' : 'https://orbat.misfitmaid.com/auth'
+            'redirectUri' => PHP_SAPI == 'cli-server' ? 'http://localhost:8000/auth' : 'https://projectharvest.net/auth'
         ]);
     }
 
