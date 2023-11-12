@@ -32,6 +32,8 @@ namespace Orbat {
 
     nf_route("/units/create", "Orbat\Controller\Units.Create");
 
+    nf_route("/unit/:idUnit", "Orbat\Controller\Unit.Overview");
+
     $defaultConfig = [
         'name' => 'ORBAT',
         'debug' => php_sapi_name() == 'cli-server' || file_exists(__DIR__ . "/DEBUG"),

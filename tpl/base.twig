@@ -42,7 +42,7 @@
                                 <a class="navbar-link">My units</a>
                                 <div class="navbar-dropdown">
                                     {% for eu in user.editableUnits %}
-                                        <a class="navbar-item" href="/units/{{ eu.unit.idUnit|snowflake }}">{{ eu.unit.name }}</a>
+                                        <a class="navbar-item" href="/unit/{{ eu.unit.idUnit|snowflake }}">{{ eu.unit.name }}</a>
                                     {% endfor %}
                                     <hr class="navbar-divider"/>
                                     <a class="navbar-item" href="/units/create">Create new unit</a>
