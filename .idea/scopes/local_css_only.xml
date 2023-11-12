@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="local css only" pattern="file[orbat]:css/*" />
+</component>

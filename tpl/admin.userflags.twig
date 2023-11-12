@@ -1,0 +1,36 @@
+{% extends "base.twig" %}
+
+{% block title %}Manage user: {{ v.displayName }}{% endblock title %}
+
+{% block content %}
+    <form method="post">
+        <input type="hidden" name="csrf" value="{{ csrf }}">
+        <div class="field">
+            <label class="checkbox">
+                <input type="checkbox" name="admin" {{ v.isAdmin ? 'checked' : '' }}> Admin
+            </label>
+        </div>
+        <div class="field">
+            <label class="checkbox">
+                <input type="checkbox" name="mod" {{ v.isMod ? 'checked' : '' }}> Mod
+            </label>
+        </div>
+        <div class="field">
+            <label class="checkbox">
+                <input type="checkbox" name="approver" {{ v.isApprover ? 'checked' : '' }}> Approver
+            </label>
+        </div>
+        <div class="field">
+            <label class="checkbox">
+                <input type="checkbox" name="banned" {{ v.isBanned ? 'checked' : '' }}> Banned
+            </label>
+        </div>
+        <div class="field">
+            <label class="checkbox">
+                <input type="checkbox" name="doots" {{ v.isDootable ? 'checked' : '' }}> Dootable
+            </label>
+        </div>
+
+        <button class="button is-danger">Save</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends "base.twig" %}
+
+{% block title %}{{ u.displayName }}{% endblock title %}
+{% block customTitle %}{% endblock customTitle %}
+
+{% block content %}
+    <div class="columns">
+        <div class="column is-narrow" style="width:340px;">
+            <div class="card">
+                {% if u.banner is defined %}
+                    <div class="card-image">
+                        <figure class="image">
+                            <img src="{{ u.getBannerURL() }}?size=512" alt="User banner">
+                        </figure>
+                    </div>
+                {% endif %}
+                <div class="card-content">
+                    <div class="media">
+                        <div class="media-left">
+                            <figure class="image is-48x48">
+                                <img src="{{ u.getAvatarURL() }}" alt="User avatar">
+                            </figure>
+                        </div>
+                        <div class="media-content">
+                            <p class="title is-4">{{ u.displayName }}</p>
+                            <p class="subtitle is-6" title="{{ u.idUser }}">{{ u.username }}</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        Registered <span title="{{ u.dateCreated.toCookieString() }}">{{ u.dateCreated.diffForHumans() }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    {% for c in u.characters %}
+                        {% if user.idUser == c.idAuthor or constant("CHAR_APPROVED", c) == c.status %}
+                            <div class="media">
+                                <div class="media-left">
+                                    <figure class="image is-48x48">
+                                        <img src="{{ c.getAvatarURL() }}" alt="User avatar">
+                                    </figure>
+                                </div>
+                                <div class="media-content">
+                                    <p class="title is-5">
+                                        {% if user.idUser == c.idAuthor %}
+                                            <a href="{{ c.link }}">{{ c.name }}</a>
+                                        {% else %}
+                                            <a href="https://wiki.wormrp.com/wiki/{{ c.name|replace({" ": "_"}) }}">{{ c.name }}</a>
+                                        {% endif %}
+                                    </p>
+                                    <p class="subtitle is-7">{{ c.getPostCount()|format_number }} posts</p>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <p class="title">Recent posts</p>
+            {{ posts.renderItems("user.post") }}
+        </div>
+    </div>
+{% endblock %}

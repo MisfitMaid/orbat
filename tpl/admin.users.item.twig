@@ -1,0 +1,16 @@
+<tr>
+    <td>{{ include('userAvInline.twig', {user: item}) }}</td>
+    <td>{{ item.username }} (<a href="/admin/users/{{ item.idUser }}">{{ item.idUser }}</a>)</td>
+    <td>
+        {{ item.isAdmin ? "Admin " : "" }}
+        {{ item.isMod ? "Mod " : "" }}
+        {{ item.isApprover ? "Approver " : "" }}
+        {{ item.isBanned ? "Banned " : "" }}
+    </td>
+    <td class="nowrap">
+        <span title="{{ item.dateCreated.toCookieString() }}">{{ item.dateCreated.diffForHumans() }}</span>
+    </td>
+    <td class="nowrap">
+        <span title="{{ item.dateUpdated.toCookieString() }}">{{ item.dateUpdated.diffForHumans() }}</span>
+    </td>
+</tr>

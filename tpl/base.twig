@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{% if block("title") is defined %}{{ block("title") }} - ORBAT{% else %}ORBAT Tool{% endif %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link media="all" rel="stylesheet" href="/css/orbat.css"/>
+    <meta property="og:site_name" content="ORBAT Tool"/>
+    <meta property="og:title"
+          content="{% if block("title") is defined %}{{ block("title") }}{% else %}ORBAT Tool by MisfitMaid{% endif %}"/>
+    {% if block("description") is defined %}
+        <meta property="og:description" content="{{ block("description") }}"/>
+    {% endif %}
+    <meta name="theme-color" content="#a79271"/>
+    <script>
+        /*to prevent Firefox FOUC, this must be here*/
+        let FF_FOUC_FIX;
+    </script>
+</head>
+
+<body>
+{% block header %}
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="container">
+            <div class="navbar-brand">
+                <a href="/" class="navbar-item">
+                    <span class="icon-text">
+                        <span class="icon">
+                            <figure class="image">
+                                {{ uic.svgLogo|raw }}
+                            </figure>
+                        </span>
+                        <span class="pl-2"><strong>ORBAT Tool</strong></span>
+                    </span>
+                </a>
+            </div>
+
+            <div class="navbar-menu">
+                <div class="navbar-start">
+                    {% if user %}
+                        <nav class="navbar" role="navigation" aria-label="dropdown navigation">
+                            <div class="navbar-item has-dropdown is-hoverable">
+                                <a class="navbar-link">My units</a>
+                                <div class="navbar-dropdown">
+                                    {% for eu in user.editableUnits %}
+                                        <a class="navbar-item" href="/units/{{ eu.unit.idUnit|snowflake }}">{{ eu.unit.name }}</a>
+                                    {% endfor %}
+                                    <hr class="navbar-divider"/>
+                                    <a class="navbar-item" href="/units/create">Create new unit</a>
+                                </div>
+                            </div>
+                        </nav>
+                    {% endif %}
+                    {% if user and user.isAdmin %}
+                        <nav class="navbar" role="navigation" aria-label="dropdown navigation">
+                            <div class="navbar-item has-dropdown is-hoverable">
+                                <a class="navbar-link">Admin</a>
+                                <div class="navbar-dropdown">
+                                    <a class="navbar-item" href="/admin/users">User management</a>
+                                </div>
+                            </div>
+                        </nav>
+                    {% endif %}
+                </div>
+
+                <div class="navbar-end">
+                    {% if user %}
+                        {{ include('userAvInline.twig', {user: user, classes: "navbar-item"}) }}
+                        <a class="navbar-item" href="/logout">Log out</a>
+                    {% else %}
+                        <a class="navbar-item" href="/login">Log in</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+{% block contentOuter %}
+    <div class="container">
+        <div class="section">
+            {% if block("title") is defined %}
+                {% if block("customTitle") is defined %}
+                    {{ block("customTitle") }}
+                {% else %}
+                    <h2 class="title">{{ block("title") }}</h2>
+                {% endif %}
+            {% endif %}
+            {% if breadcrumb is defined %}
+                <nav class="breadcrumb" aria-label="breadcrumbs">
+                    <ul>
+                        {% for x in breadcrumb %}
+                            <li><a href="{{ x.a }}">{{ x.text }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </nav>
+            {% endif %}
+
+            {% block content %}{% endblock content %}
+        </div>
+    </div>
+{% endblock %}
+{% block footer %}
+    <footer class="footer">
+        <div class="container">
+            <div class="columns">
+                <div class="column has-text-right">
+                    <p class="title is-5">ORBAT Tool by MisfitMaid</p>
+                    <p class="subtitle is-6">A utility to organize your fake military groups</p>
+
+
+                    <p class="is-size-7">Commit <code><a href="https://github.com/MisfitMaid/orbat/commit/{{ constant("GIT_HASH") }}" target="_blank">{{ constant("GIT_DESCRIBE") }}</a></code>
+                        rendered in {{ elapsedTime()|round(3) }} sec</p>
+                </div>
+                <div class="column">
+                    <p class="buttons">
+                        <a class="button" target="_blank" href="https://patreon.com/MisfitMaid"><span class="icon is-small"><i class="fa fa-patreon"></i></span></a>
+                        <a class="button" target="_blank" href="https://paypal.me/MisfitMaid"><span class="icon is-small"><i class="fa fa-paypal"></i></span></a>
+                        <a class="button" target="_blank" href="https://twitch.tv/MisfitMaid"><span class="icon is-small"><i class="fa fa-twitch"></i></span></a>
+                        <a class="button" target="_blank" href="https://crimew.gay/MisfitMaid"><span class="icon is-small"><i class="fa fa-mastodon"></i></span></a>
+                        <a class="button" target="_blank" href="https://discord.gg/BdKpuFcYzG"><span class="icon is-small"><i class="fa fa-discord-alt"></i></span></a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+{% endblock %}
+</body>
+</html>

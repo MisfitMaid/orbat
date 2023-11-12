@@ -34,6 +34,15 @@ class Controller extends \Nin\Controller
         if (php_sapi_name() == 'cli-server') {
             $this->twig->addExtension(new \Twig\Extension\DebugExtension());
         }
+
+        $this->twig->addFilter(new \Twig\TwigFilter('snowflake', function ($snow) {
+            return Snowflake::format($snow);
+        }));
+
+        $this->twig->addGlobal("ui", nf_param("ui"));
+        $this->twig->addGlobal("uic", [
+            'svgLogo' => file_get_contents("img/valkyrie.svg")
+        ]);
     }
 
     /**
@@ -72,7 +81,7 @@ class Controller extends \Nin\Controller
         $this->twig->addGlobal("user", Nin::user());
         $this->twig->addGlobal("csrf", Nin::getSession("csrf_token"));
         if (count($this->breadcrumb) > 0) {
-            $this->twig->addGlobal("breadcrumb", array_merge([["text" => "WormRP", "a" => "/"]], $this->breadcrumb));
+            $this->twig->addGlobal("breadcrumb", array_merge([["text" => "Home", "a" => "/"]], $this->breadcrumb));
         }
         echo $this->twig->render($view . ".twig", $options);
     }

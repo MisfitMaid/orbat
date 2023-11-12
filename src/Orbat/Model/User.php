@@ -22,6 +22,7 @@ use Carbon\Carbon;
  * @property bool $isBanned
  *
  * @property DbSession[] $sessions
+ * @property UnitEditor[] $editableUnits
  */
 class User extends \Orbat\Model
 {
@@ -38,7 +39,8 @@ class User extends \Orbat\Model
     public function relations()
     {
         return [
-            'sessions' => [HAS_MANY, "Orbat\Model\DbSession", 'idUser']
+            'sessions' => [HAS_MANY, "Orbat\Model\DbSession", 'idUser'],
+            'editableUnits' => [HAS_MANY, "Orbat\Model\UnitEditor", 'idUser'],
         ];
     }
 

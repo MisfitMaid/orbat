@@ -1,0 +1,79 @@
+/*!
+ * Copyright (c) 2023 Keira Dueck <sylae@calref.net>
+ * Use of this source code is governed by the MIT license, which
+ * can be found in the LICENSE file.
+ */
+
+@charset "utf-8";
+
+$orbp1: #f3f5ee;
+$orbp2: #d9dbc5;
+$orbp3: #c1ba9b;
+$orbp4: #a79271;
+$orbp5: #846152;
+$orbp6: #5a3b38;
+$orbp7: #311e22;
+$orbp8: #070406;
+
+$navbar-text: $orbp2;
+$navbar-text-hover: $orbp3;
+$navbar-bg: $orbp8;
+
+$navbar-item-color: $navbar-text;
+$navbar-item-hover-color: $navbar-text-hover;
+$navbar-background-color: $navbar-bg;
+$navbar-item-hover-background-color: $navbar-bg;
+$navbar-dropdown-background-color: $navbar-bg;
+$navbar-dropdown-item-color: $navbar-text;
+$navbar-dropdown-item-hover-color: $navbar-text-hover;
+$navbar-dropdown-item-hover-background-color: $navbar-bg;
+$navbar-dropdown-border-top: 0;
+$navbar-dropdown-arrow: $navbar-text;
+
+$text: $orbp8;
+$text-strong: $orbp8;
+
+$scheme-main: $orbp2;
+$scheme-main-bis: $orbp3;
+$scheme-main-ter: $orbp4;
+$input-border-color: $orbp5;
+$code-background: $scheme-main;
+$tag-background-color: $scheme-main;
+
+$message-header-background-color: $scheme-main-ter;
+$message-background-color: $scheme-main-bis;
+
+@import "fonts";
+
+$family-sans-serif: "Atkinson Hyperlegible", "Lato", "Segoe UI", sans-serif;
+$family-monospace: "Cascadia Mono", "Cascadia Code", monospace;
+
+@import "bulma/bulma.sass";
+
+$fa-font-path: "/css/forkawesome/fonts";
+@import "forkawesome/scss/fork-awesome";
+
+:root {
+  color-scheme: light dark;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.media .media {
+  border-left: 1px $scheme-main-ter solid;
+  padding-left: 0.5rem;
+}
+
+.is-partial-transparent {
+  opacity: 0.5;
+}
+
+.navbar-brand {
+  fill: $navbar-item-color;
+
+  &:hover {
+    fill: $navbar-item-hover-color;
+  }
+}

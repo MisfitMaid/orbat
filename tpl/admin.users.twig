@@ -1,0 +1,20 @@
+{% extends "base.twig" %}
+
+{% block title %}User management{% endblock title %}
+
+{% block content %}
+    <table class="table is-striped is-hoverable is-fullwidth">
+        <thead>
+        <tr>
+            <th>Display</th>
+            <th>Username</th>
+            <th>Flags</th>
+            <th>Created</th>
+            <th>Updated</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{ users.renderItems("admin.users.item") }}
+        </tbody>
+    </table>
+{% endblock %}
