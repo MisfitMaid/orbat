@@ -1,0 +1,14 @@
+{% extends "base.twig" %}
+
+{% block title %}Privacy Policy{% endblock title %}
+
+{% block content %}
+    <section class="content">
+        <p>I have neither the need nor the desire to do sus things with your data. You are free to audit the source code if it makes you feel better (although you have no way of verifying that code is
+            what's actually running on this webserver). GDPR data requests or whatever can be sent to misfit at misfitmaid dot com.</p>
+        <p>For those doing unit configuration, which requires logging in (currently via discord), we do a simple oauth request. You can see what data Discord sends to us
+            <a href="https://discord.com/developers/docs/resources/user#user-object" target="_blank" rel="noreferrer">here</a> (under the <code>identify</code> scope). We don't use or store most of
+            that data tbh. In addition, when logging in we store your IP address and reported user agent for purposes of session identification. This is purged in the normal session expiry process.
+        </p>
+    </section>
+{% endblock %}

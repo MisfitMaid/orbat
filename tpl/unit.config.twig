@@ -1,0 +1,91 @@
+{% extends "base.twig" %}
+
+{% block title %}{{ unit.name }} - Configuration{% endblock title %}
+
+{% block content %}
+    <div class="tabs is-fullwidth">
+        <ul>
+            <li><a href="/unit/{{ unit.idUnit|snowflake }}">Overview</a></li>
+            <li><a href="/unit/{{ unit.idUnit|snowflake }}/roster">Roster</a></li>
+            <li><a href="/unit/{{ unit.idUnit|snowflake }}/operations">Operations</a></li>
+            {% if canEdit %}
+                <li class="is-active"><a href="/unit/{{ unit.idUnit|snowflake }}/config">Configuration</a></li>
+            {% endif %}
+        </ul>
+    </div>
+    <div class="columns">
+        <div class="column is-narrow">
+            <aside class="menu">
+                <p class="menu-label">General</p>
+                <ul class="menu-list">
+                    <li><a href="/unit/{{ unit.idUnit|snowflake }}/config">Unit information</a></li>
+                    <li><a href="/unit/{{ unit.idUnit|snowflake }}/config/editors">Editor management</a></li>
+                </ul>
+                <p class="menu-label">Personnel Management</p>
+                <ul class="menu-list">
+                    <li><a href="/unit/{{ unit.idUnit|snowflake }}/config/ranks">Ranks</a></li>
+                    <li><a href="/unit/{{ unit.idUnit|snowflake }}/config/endorsements">Endorsements</a></li>
+                    <li><a href="/unit/{{ unit.idUnit|snowflake }}/config/medals">Medals</a></li>
+                    <li><a href="/unit/{{ unit.idUnit|snowflake }}/config/sids">Service IDs</a></li>
+                </ul>
+                <p class="menu-label">Unit Structure</p>
+                <ul class="menu-list">
+                    <li><a href="/unit/{{ unit.idUnit|snowflake }}/config/groups">Groups</a></li>
+                </ul>
+            </aside>
+        </div>
+        <div class="column">
+            {% block configContent %}
+                <form method="post">
+                    <input type="hidden" name="csrf" value="{{ csrf }}">
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label" for="name">Unit name</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input class="input" type="text" name="name" id="name" required="required" value="{{ unit.name }}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label" for="icon">Icon</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <div class="file">
+                                        <label class="file-label">
+                                            <input class="file-input" type="file" name="icon" id="icon" accept="image/png, image/jpeg"/>
+                                            <span class="file-cta">
+                                        <span class="file-icon"><i class="fa fa-file-image-o"></i></span>
+                                        <span class="file-label">Choose an icon...</span>
+                                    </span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <p class="help">Uploaded icons will be reencoded as 256x256 PNGs</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label"></div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input class="button is-primary" type="submit" value="Edit unit">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}

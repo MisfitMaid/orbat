@@ -2,6 +2,7 @@
 
 namespace Orbat\Controller;
 
+use Intervention\Image\ImageManager;
 use Nin\Nin;
 use Orbat\Controller;
 use Orbat\Snowflake;
@@ -45,5 +46,47 @@ class Unit extends Controller
     public function actionOverview()
     {
         $this->render("unit.overview");
+    }
+
+    public function actionConfig()
+    {
+        if ($this->canEdit) {
+            if (isset($_POST['csrf'])) {
+                if ($_POST['csrf'] !== \Nin\Nin::getSession('csrf_token')) {
+                    $this->displayError('Invalid token.');
+                    return false;
+                }
+                $this->unit->name = trim($_POST['name']);
+
+                if (mb_strlen($this->unit->name) == 0 || mb_strlen($this->unit->name) > 64) {
+                    $this->displayError("Name is required, please try again", 400);
+                    return false;
+                }
+
+                if (array_key_exists('icon', $_FILES)) {
+                    $file = $_FILES['icon'];
+
+                    if (!in_array($file['type'], ['image/png', 'image/jpeg'])) {
+                        $this->displayError('invalid image format');
+                        return false;
+                    }
+
+                    $manager = new ImageManager();
+                    $img = $manager->make($file['tmp_name']);
+                    $img->fit(256, 256, function ($constraint) {
+                        $constraint->upsize();
+                    });
+                    $this->unit->icon = base64_encode($img->encode("png"));
+                }
+                $this->unit->save();
+            }
+            $this->render("unit.config");
+        } else {
+            if (!Nin::user()) {
+                $this->redirect("/login");
+                return false;
+            }
+            $this->displayError("No permissions to edit unit", 403);
+        }
     }
 }

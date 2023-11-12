@@ -7,7 +7,6 @@
 
 namespace Orbat\Controller;
 
-use Nin\Nin;
 use Orbat\Controller;
 
 class Index extends Controller
@@ -15,5 +14,10 @@ class Index extends Controller
     public function actionIndex()
     {
         $this->render("home");
+    }
+
+    public function actionPrivacy()
+    {
+        $this->render("privacy");
     }
 }

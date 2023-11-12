@@ -25,6 +25,7 @@ namespace Orbat {
     }
 
     nf_route("/", "Orbat\Controller\Index.Index");
+    nf_route("/privacy", "Orbat\Controller\Index.Privacy");
 
     nf_route("/login", "Orbat\Controller\User.Login");
     nf_route("/logout", "Orbat\Controller\User.Logout");
@@ -33,6 +34,7 @@ namespace Orbat {
     nf_route("/units/create", "Orbat\Controller\Units.Create");
 
     nf_route("/unit/:idUnit", "Orbat\Controller\Unit.Overview");
+    nf_route("/unit/:idUnit/config", "Orbat\Controller\Unit.Config");
 
     $defaultConfig = [
         'name' => 'ORBAT',

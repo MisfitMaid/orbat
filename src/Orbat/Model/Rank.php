@@ -10,34 +10,32 @@ namespace Orbat\Model;
 use Carbon\Carbon;
 
 /**
+ * @property int $idRank
  * @property int $idUnit
+ * @property int $weight
+ * @property string $abbr
  * @property string $name
- * @property ?string $icon
  * @property Carbon $dateCreated
  * @property Carbon $dateUpdated
  *
- * @property UnitEditor[] $editors
- * @property Member[] $members
- * @property Rank[] $ranks
+ * @property Unit $unit
  */
-class Unit extends \Orbat\Model
+class Rank extends \Orbat\Model
 {
     public static function tablename()
     {
-        return 'units';
+        return 'ranks';
     }
 
     public static function primarykey()
     {
-        return 'idUnit';
+        return 'idRank';
     }
 
     public function relations()
     {
         return [
-            'editors' => [HAS_MANY, "Orbat\Model\UnitEditor", 'idUnit'],
-            'members' => [HAS_MANY, "Orbat\Model\Member", 'idUnit'],
-            'ranks' => [HAS_MANY, "Orbat\Model\Rank", 'idRank'],
+            'unit' => [BELONGS_TO, "Orbat\Model\Unit", 'idUnit'],
         ];
     }
 
