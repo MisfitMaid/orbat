@@ -35,6 +35,7 @@ namespace Orbat {
 
     nf_route("/unit/:idUnit", "Orbat\Controller\Unit.Overview");
     nf_route("/unit/:idUnit/config", "Orbat\Controller\Unit.Config");
+    nf_route("/unit/:idUnit/config/ranks", "Orbat\Controller\Unit.ConfigRanks");
 
     $defaultConfig = [
         'name' => 'ORBAT',

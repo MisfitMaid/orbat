@@ -5,6 +5,7 @@ namespace Orbat\Controller;
 use Intervention\Image\ImageManager;
 use Nin\Nin;
 use Orbat\Controller;
+use Orbat\Model\Rank;
 use Orbat\Snowflake;
 
 class Unit extends Controller
@@ -81,6 +82,70 @@ class Unit extends Controller
                 $this->unit->save();
             }
             $this->render("unit.config");
+        } else {
+            if (!Nin::user()) {
+                $this->redirect("/login");
+                return false;
+            }
+            $this->displayError("No permissions to edit unit", 403);
+        }
+    }
+
+    public function actionConfigRanks()
+    {
+        if ($this->canEdit) {
+            if (isset($_POST['csrf'])) {
+                if ($_POST['csrf'] !== \Nin\Nin::getSession('csrf_token')) {
+                    $this->displayError('Invalid token.');
+                    return false;
+                }
+
+                $weight = (int)$_POST['weight'];
+                $abbr = trim($_POST['abbr']);
+                $name = trim($_POST['name']);
+
+                if (mb_strlen($abbr) == 0 || mb_strlen($name) == 0) {
+                    $this->displayError("abbr or name must not be empty");
+                    return false;
+                }
+
+                if (array_key_exists("rank_new", $_POST)) {
+                    $r = new Rank();
+                    $r->idUnit = $this->unit->idUnit;
+                    $r->idRank = Snowflake::generate();
+                    $r->weight = $weight;
+                    $r->abbr = $abbr;
+                    $r->name = $name;
+                    $r->save();
+                }
+
+                if (array_key_exists("rank_edit", $_POST)) {
+                    /** @var Rank $rank */
+                    $rank = Rank::findByPk($_POST['idRank']);
+                    if (!$rank || $rank->idUnit != $this->unit->idUnit) {
+                        $this->displayError("Invalid Rank ID");
+                        return false;
+                    }
+
+                    $rank->weight = $weight;
+                    $rank->abbr = $abbr;
+                    $rank->name = $name;
+                    $rank->save();
+                }
+
+                if (array_key_exists("rank_delete", $_POST)) {
+                    /** @var Rank $rank */
+                    $rank = Rank::findByPk($_POST['idRank']);
+                    if (!$rank || $rank->idUnit != $this->unit->idUnit) {
+                        $this->displayError("Invalid Rank ID");
+                        return false;
+                    }
+                    $rank->remove();
+                }
+
+
+            }
+            $this->render("unit.config.ranks");
         } else {
             if (!Nin::user()) {
                 $this->redirect("/login");

@@ -1,0 +1,38 @@
+{% extends "unit.config.twig" %}
+
+{% block configContent %}
+    <table class="table is-striped is-narrow is-hoverable is-fullwidth">
+        <thead>
+        <tr>
+            <th>Weight</th>
+            <th>Abbreviation</th>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- foreach -->
+        {% for rank in unit.ranks %}
+            <form method="post">
+                <input type="hidden" name="csrf" value="{{ csrf }}"/>
+                <input type="hidden" name="idRank" value="{{ rank.idRank }}"/>
+                <tr>
+                    <td><input class="input" type="number" min="-32768" max="32767" name="weight" required="required" value="{{ rank.weight }}"/></td>
+                    <td><input class="input" type="text" maxlength="16" name="abbr" required="required" value="{{ rank.abbr }}"/></td>
+                    <td><input class="input" type="text" maxlength="64" name="name" required="required" value="{{ rank.name }}"/></td>
+                    <td><input class="button is-link" type="submit" name="rank_edit" value="Edit"/><input class="button is-danger" type="submit" name="rank_delete" value="Delete"/></td>
+                </tr>
+            </form>
+        {% endfor %}
+        <form method="post">
+            <input type="hidden" name="csrf" value="{{ csrf }}"/>
+            <tr>
+                <td><input class="input" type="number" min="-32768" max="32767" name="weight" required="required"/></td>
+                <td><input class="input" type="text" maxlength="16" name="abbr" required="required"/></td>
+                <td><input class="input" type="text" maxlength="64" name="name" required="required"/></td>
+                <td><input class="button is-link" type="submit" name="rank_new" value="Create new rank"/></td>
+            </tr>
+        </form>
+        </tbody>
+    </table>
+{% endblock %}
