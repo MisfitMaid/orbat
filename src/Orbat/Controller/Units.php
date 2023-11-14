@@ -26,6 +26,11 @@ class Units extends Controller
 
         $this->addBreadcrumb("Create unit", "/units/create");
 
+        if (!Nin::user()->isAdmin) {
+            $this->displayError("If you are interested in creating a unit, please get in touch. Right now things are under construction so yeah.", 403);
+            return false;
+        }
+
         if (isset($_POST['csrf'])) {
             if ($_POST['csrf'] !== \Nin\Nin::getSession('csrf_token')) {
                 $this->displayError('Invalid token.');
