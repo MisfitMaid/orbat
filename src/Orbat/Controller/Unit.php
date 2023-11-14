@@ -5,6 +5,7 @@ namespace Orbat\Controller;
 use Intervention\Image\ImageManager;
 use Nin\Nin;
 use Orbat\Controller;
+use Orbat\Model\Endorsement;
 use Orbat\Model\Rank;
 use Orbat\Snowflake;
 
@@ -146,6 +147,70 @@ class Unit extends Controller
 
             }
             $this->render("unit.config.ranks");
+        } else {
+            if (!Nin::user()) {
+                $this->redirect("/login");
+                return false;
+            }
+            $this->displayError("No permissions to edit unit", 403);
+        }
+    }
+
+    public function actionConfigEndorsements()
+    {
+        if ($this->canEdit) {
+            if (isset($_POST['csrf'])) {
+                if ($_POST['csrf'] !== \Nin\Nin::getSession('csrf_token')) {
+                    $this->displayError('Invalid token.');
+                    return false;
+                }
+
+                $weight = (int)$_POST['weight'];
+                $abbr = trim($_POST['abbr']);
+                $name = trim($_POST['name']);
+
+                if (mb_strlen($abbr) == 0 || mb_strlen($name) == 0) {
+                    $this->displayError("abbr or name must not be empty");
+                    return false;
+                }
+
+                if (array_key_exists("endorsement_new", $_POST)) {
+                    $r = new Endorsement();
+                    $r->idUnit = $this->unit->idUnit;
+                    $r->idEndorsement = Snowflake::generate();
+                    $r->weight = $weight;
+                    $r->abbr = $abbr;
+                    $r->name = $name;
+                    $r->save();
+                }
+
+                if (array_key_exists("endorsement_edit", $_POST)) {
+                    /** @var Endorsement $end */
+                    $end = Endorsement::findByPk($_POST['idEndorsement']);
+                    if (!$end || $end->idUnit != $this->unit->idUnit) {
+                        $this->displayError("Invalid Endorsement ID");
+                        return false;
+                    }
+
+                    $end->weight = $weight;
+                    $end->abbr = $abbr;
+                    $end->name = $name;
+                    $end->save();
+                }
+
+                if (array_key_exists("endorsement_delete", $_POST)) {
+                    /** @var Endorsement $end */
+                    $end = Endorsement::findByPk($_POST['idEndorsement']);
+                    if (!$end || $end->idUnit != $this->unit->idUnit) {
+                        $this->displayError("Invalid Endorsement ID");
+                        return false;
+                    }
+                    $end->remove();
+                }
+
+
+            }
+            $this->render("unit.config.endorsements");
         } else {
             if (!Nin::user()) {
                 $this->redirect("/login");

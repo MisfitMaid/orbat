@@ -38,6 +38,7 @@ class Unit extends \Orbat\Model
             'editors' => [HAS_MANY, "Orbat\Model\UnitEditor", 'idUnit'],
             'members' => [HAS_MANY, "Orbat\Model\Member", 'idUnit'],
             'ranks' => [HAS_MANY, "Orbat\Model\Rank", 'idUnit', ['order' => 'asc', 'orderby' => 'weight']],
+            'endorsements' => [HAS_MANY, "Orbat\Model\Endorsement", 'idUnit', ['order' => 'asc', 'orderby' => 'weight']],
         ];
     }
 
