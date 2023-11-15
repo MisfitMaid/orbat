@@ -1,0 +1,50 @@
+{% extends "base.twig" %}
+
+{% block title %}{{ unit.name }}{% endblock title %}
+
+{% block content %}
+    <div class="tabs is-fullwidth">
+        <ul>
+            <li><a href="/unit/{{ unit.idUnit|snowflake }}">Overview</a></li>
+            <li class="is-active"><a href="/unit/{{ unit.idUnit|snowflake }}/roster">Roster</a></li>
+            <li><a href="/unit/{{ unit.idUnit|snowflake }}/operations">Operations</a></li>
+            {% if canEdit %}
+                <li><a href="/unit/{{ unit.idUnit|snowflake }}/config">Configuration</a></li>
+            {% endif %}
+        </ul>
+    </div>
+
+    {% if canEdit %}
+        <a class="button is-link" href="/unit/{{ unit.idUnit|snowflake }}/roster/add">Add a member</a>
+    {% endif %}
+
+    <table class="table is-striped is-narrow is-hoverable is-fullwidth">
+        <thead>
+        <tr>
+            <th>Rank</th>
+            <th>Name</th>
+            <th>Joined</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for member in unit.members %}
+            <tr>
+                <td>{{ member.rank.abbr }}</td>
+                <td>{{ member.name }}</td>
+                <td>{{ member.dateJoined.toDateString() }}</td>
+                <td>
+                    <form method="post">
+                        <input type="hidden" name="csrf" value="{{ csrf }}"/>
+                        <input type="hidden" name="idMember" value="{{ member.idMember }}"/>
+                        <a class="button is-info" href="/unit/{{ unit.idUnit|snowflake }}/roster/{{ member.idMember|snowflake }}">Info</a>
+                        {% if canEdit %}
+                            <input type="submit" class="button is-danger" name="delete" value="Delete"/>
+                        {% endif %}
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

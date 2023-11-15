@@ -19,6 +19,7 @@ use Carbon\Carbon;
  * @property UnitEditor[] $editors
  * @property Member[] $members
  * @property Rank[] $ranks
+ * @property Endorsement[] $endorsements
  */
 class Unit extends \Orbat\Model
 {

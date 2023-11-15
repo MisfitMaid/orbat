@@ -1,0 +1,106 @@
+<form method="post">
+    <input type="hidden" name="csrf" value="{{ csrf }}">
+
+    <div class="field is-horizontal">
+        <div class="field-label is-normal">
+            <label class="label" for="name">Member name</label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+                <div class="control">
+                    <input class="input" type="text" name="name" id="name" required="required" value="{{ member.name }}"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="field is-horizontal">
+        <div class="field-label is-normal">
+            <label class="label" for="dateJoined">Date Joined</label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+                <div class="control">
+                    <input class="input" type="date" name="dateJoined" id="dateJoined" required="required" value="{{ member.dateJoined.toDateString() }}"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="field is-horizontal">
+        <div class="field-label is-normal">
+            <label class="label" for="rank">Rank</label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+                <div class="select">
+                    <select id="rank" name="rank">
+                        {% for rank in unit.ranks %}
+                            <option value="{{ rank.idRank }}" {% if rank.idRank == member.idRank %}selected="selected"{% endif %}>
+                                {{ rank.abbr }} - {{ rank.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="field is-horizontal">
+        <div class="field-label is-normal">
+            <label class="label" for="endorsements">Endorsements</label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+                <div class="select is-multiple">
+                    <select id="endorsements" name="endorsements[]" multiple="multiple">
+                        {% for end in unit.endorsements %}
+                            <option value="{{ end.idEndorsement }}" {% if end.idEndorsement in form.endorsements %}selected="selected"{% endif %}>
+                                {{ end.abbr }} - {{ end.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="field is-horizontal">
+        <div class="field-label is-normal">
+            <label class="label" for="remarks">Remarks (public)</label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+                <div class="control">
+                    <textarea class="textarea" id="remarks" name="remarks" maxlength="65535">{{ member.remarks }}</textarea>
+                </div>
+                <p class="help"><a href="https://commonmark.org/help/" target="_blank" rel="noreferrer">Markdown</a> is supported.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="field is-horizontal">
+        <div class="field-label is-normal">
+            <label class="label" for="remarksInternal">Remarks (internal)</label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+                <div class="control">
+                    <textarea class="textarea" id="remarksInternal" name="remarksInternal" maxlength="65535">{{ member.remarksInternal }}</textarea>
+                </div>
+                <p class="help"><a href="https://commonmark.org/help/" target="_blank" rel="noreferrer">Markdown</a> is supported.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="field is-horizontal">
+        <div class="field-label"></div>
+        <div class="field-body">
+            <div class="field">
+                <div class="control">
+                    <input class="button is-link" type="submit" name="submit" value="{{ form.submit }}">
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

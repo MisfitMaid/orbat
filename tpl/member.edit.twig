@@ -1,0 +1,7 @@
+{% extends "base.twig" %}
+
+{% block title %}Edit member {{ member.name }} - {{ unit.name }}{% endblock title %}
+
+{% block content %}
+    {% include "member.addform.twig" %}
+{% endblock %}

@@ -14,7 +14,7 @@ class Model extends \Nin\Model
 
     public function __get($name)
     {
-        if (in_array($name, ['dateCreated', 'dateUpdated'])) {
+        if (in_array($name, ['dateCreated', 'dateUpdated', 'dateJoined', 'dateLastPromotion'])) {
             return new Carbon(parent::__get($name));
         } elseif (str_starts_with($name, "is")) {
             return (bool)parent::__get($name);
