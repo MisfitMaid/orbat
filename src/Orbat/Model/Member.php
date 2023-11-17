@@ -77,7 +77,7 @@ class Member extends \Orbat\Model
         return sprintf("%s-%s-%s",
             Snowflake::format($this->idMember),
             $numhash,
-            $initials
+            mb_strtoupper($initials)
         );
     }
 
