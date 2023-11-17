@@ -7,6 +7,7 @@ use Intervention\Image\ImageManager;
 use Nin\Nin;
 use Orbat\Controller;
 use Orbat\Model\Endorsement;
+use Orbat\Model\Group;
 use Orbat\Model\Member;
 use Orbat\Model\MemberEndorsement;
 use Orbat\Model\Rank;
@@ -55,6 +56,8 @@ class Unit extends Controller
 
     public function actionRoster()
     {
+        $this->addBreadcrumb("Roster", sprintf("/unit/%s/roster",
+            Snowflake::format($this->unit->idUnit)));
         $this->render("unit.roster");
     }
 
@@ -205,6 +208,8 @@ class Unit extends Controller
 
     public function actionConfig()
     {
+        $this->addBreadcrumb("Configuration", sprintf("/unit/%s/config",
+            Snowflake::format($this->unit->idUnit)));
         if ($this->canEdit) {
             if (isset($_POST['csrf'])) {
                 if ($_POST['csrf'] !== \Nin\Nin::getSession('csrf_token')) {
@@ -247,6 +252,8 @@ class Unit extends Controller
 
     public function actionConfigRanks()
     {
+        $this->addBreadcrumb("Configuration", sprintf("/unit/%s/config",
+            Snowflake::format($this->unit->idUnit)));
         if ($this->canEdit) {
             if (isset($_POST['csrf'])) {
                 if ($_POST['csrf'] !== \Nin\Nin::getSession('csrf_token')) {
@@ -309,8 +316,82 @@ class Unit extends Controller
         }
     }
 
+    public function actionConfigGroups()
+    {
+        $this->addBreadcrumb("Configuration", sprintf("/unit/%s/config",
+            Snowflake::format($this->unit->idUnit)));
+        if ($this->canEdit) {
+            if (isset($_POST['csrf'])) {
+                if ($_POST['csrf'] !== \Nin\Nin::getSession('csrf_token')) {
+                    $this->displayError('Invalid token.');
+                    return false;
+                }
+
+                $weight = (int)$_POST['weight'];
+                $parent = $_POST['parent'] ?? null;
+                if ($parent == 0) {
+                    $parent = null;
+                }
+                $name = trim($_POST['name']);
+                $color = $_POST['color'] ?? null;
+
+                if (mb_strlen($name) == 0) {
+                    $this->displayError("name must not be empty");
+                    return false;
+                }
+
+                if (array_key_exists("group_new", $_POST)) {
+                    $g = new Group();
+                    $g->idGroup = Snowflake::generate();
+                    $g->idUnit = $this->unit->idUnit;
+                    $g->idParent = $parent;
+                    $g->weight = $weight;
+                    $g->name = $name;
+                    $g->color = $color;
+                    $g->save();
+                }
+
+                if (array_key_exists("group_edit", $_POST)) {
+                    /** @var Group $group */
+                    $group = Group::findByPk($_POST['idGroup']);
+                    if (!$group || $group->idUnit != $this->unit->idUnit) {
+                        $this->displayError("Invalid Group ID");
+                        return false;
+                    }
+
+                    $group->idParent = $parent;
+                    $group->weight = $weight;
+                    $group->name = $name;
+                    $group->color = $color;
+                    $group->save();
+                }
+
+                if (array_key_exists("group_delete", $_POST)) {
+                    /** @var Group $group */
+                    $group = Group::findByPk($_POST['idGroup']);
+                    if (!$group || $group->idUnit != $this->unit->idUnit) {
+                        $this->displayError("Invalid Group ID");
+                        return false;
+                    }
+                    $group->remove();
+                }
+
+
+            }
+            $this->render("unit.config.groups");
+        } else {
+            if (!Nin::user()) {
+                $this->redirect("/login");
+                return false;
+            }
+            $this->displayError("No permissions to edit unit", 403);
+        }
+    }
+
     public function actionConfigEndorsements()
     {
+        $this->addBreadcrumb("Configuration", sprintf("/unit/%s/config",
+            Snowflake::format($this->unit->idUnit)));
         if ($this->canEdit) {
             if (isset($_POST['csrf'])) {
                 if ($_POST['csrf'] !== \Nin\Nin::getSession('csrf_token')) {

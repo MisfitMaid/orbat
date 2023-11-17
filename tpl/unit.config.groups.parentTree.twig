@@ -1,0 +1,9 @@
+<option
+        value="{{ group.idGroup }}"
+        {% if selected != false and group.idGroup == selected.idGroup %}selected="selected"{% endif %}
+>
+    {% if group.depth() > 0 %}{% for i in range(0, group.depth()-1) %}-{% endfor %}{% endif %} {{ group.name }}
+</option>
+{% for group in x.childs %}
+    {% include "unit.config.groups.parentTree.twig" with {x: group, selected: selected} %}
+{% endfor %}

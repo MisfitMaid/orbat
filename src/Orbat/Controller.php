@@ -86,6 +86,13 @@ class Controller extends \Nin\Controller
         echo $this->twig->render($view . ".twig", $options);
     }
 
+    public function dump($content): void
+    {
+        if (php_sapi_name() == 'cli-server') {
+            $this->twig->addGlobal("debug_dump", $content);
+        }
+    }
+
     public function addBreadcrumb(string $title, string $url): void
     {
         $this->breadcrumb[] = ["text" => $title, "a" => $url];

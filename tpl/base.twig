@@ -123,6 +123,11 @@
                         <a href="https://github.com/MisfitMaid/orbat" target="_blank">Source code</a>
                     </p>
                 </div>
+                {% if debug_dump is defined %}
+                    <div class="column">
+                        {{ dump(debug_dump) }}
+                    </div>
+                {% endif %}
             </div>
         </div>
     </footer>

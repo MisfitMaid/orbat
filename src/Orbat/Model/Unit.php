@@ -20,6 +20,7 @@ use Carbon\Carbon;
  * @property Member[] $members
  * @property Rank[] $ranks
  * @property Endorsement[] $endorsements
+ * @property Group[] $groups
  */
 class Unit extends \Orbat\Model
 {
@@ -40,7 +41,22 @@ class Unit extends \Orbat\Model
             'members' => [HAS_MANY, "Orbat\Model\Member", 'idUnit'],
             'ranks' => [HAS_MANY, "Orbat\Model\Rank", 'idUnit', ['order' => 'asc', 'orderby' => 'weight']],
             'endorsements' => [HAS_MANY, "Orbat\Model\Endorsement", 'idUnit', ['order' => 'asc', 'orderby' => 'weight']],
+            'groups' => [HAS_MANY, "Orbat\Model\Group", 'idUnit', ['order' => 'asc', 'orderby' => 'weight']],
         ];
+    }
+
+    /**
+     * @return Group[]
+     */
+    public function groupTree(): array
+    {
+        $tree = [];
+        foreach ($this->groups as $group) {
+            if (!$group->parent) {
+                $tree[] = $group;
+            }
+        }
+        return $tree;
     }
 
 }

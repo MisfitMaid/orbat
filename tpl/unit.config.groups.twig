@@ -1,0 +1,44 @@
+{% extends "unit.config.twig" %}
+
+{% block configContent %}
+    <div class="media">
+        <div class="media-content">
+            <form method="post">
+                <div class="field is-grouped">
+                    <div class="control select">
+                        <select name="parent" id="parent">
+                            <option value="0">(top-level)</option>
+                            {% for group in unit.groupTree() %}
+                                {% include "unit.config.groups.parentTree.twig" with {x: group, selected: false} %}
+                            {% endfor %}
+                        </select>
+                        <p class="help"><label for="parent">Parent Group</label></p>
+                    </div>
+                    <div class="control">
+                        <input class="input" type="number" min="-32768" max="32767" name="weight" id="weight" required="required" value="0" style="max-width: 5em;"/>
+                        <p class="help"><label for="weight">Weight</label></p>
+                    </div>
+                    <div class="control is-expanded">
+                        <input class="input" type="text" maxlength="64" name="name" id="name" required="required"/>
+                        <p class="help"><label for="name">Name</label></p>
+                    </div>
+                    <div class="control">
+                        <input class="input" type="color" name="color" id="color" style="min-width:3em;"/>
+                        <p class="help"><label for="color">Color</label></p>
+                    </div>
+                    <div class="control">
+                        <input class="button is-link" type="submit" name="group_new" value="New Group"/>
+                    </div>
+                </div>
+                <input type="hidden" name="csrf" value="{{ csrf }}"/>
+            </form>
+        </div>
+    </div>
+
+    <hr/>
+
+    {% for group in unit.groupTree() %}
+        {% include "unit.config.groups.each.twig" with {x: group} %}
+    {% endfor %}
+
+{% endblock %}

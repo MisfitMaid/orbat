@@ -8,6 +8,7 @@
 namespace Orbat\Model;
 
 use Carbon\Carbon;
+use Orbat\Snowflake;
 
 /**
  * @property int $idMember
@@ -60,6 +61,24 @@ class Member extends \Orbat\Model
 
         $this->dateJoined = new Carbon($this->dateJoined);
         $this->dateLastPromotion = new Carbon($this->dateLastPromotion);
+    }
+
+    public function getServiceID(): string
+    {
+        $nameparts = explode(" ", $this->name);
+        if (count($nameparts) < 2) {
+            $initials = $nameparts[0][0];
+        } else {
+            $initials = $nameparts[0][0] . $nameparts[1][0];
+        }
+
+        $numhash = hash("crc32", $this->dateJoined->timestamp . $this->name);
+
+        return sprintf("%s-%s-%s",
+            Snowflake::format($this->idMember),
+            $numhash,
+            $initials
+        );
     }
 
 }

@@ -1,0 +1,37 @@
+<div class="media" {% if x.parent != false %}style="border-left-color: {{ x.parent.color }}"{% endif %}>
+    <div class="media-content">
+        <form method="post">
+            <input type="hidden" name="csrf" value="{{ csrf }}"/>
+            <input type="hidden" name="idGroup" value="{{ x.idGroup }}"/>
+            <div class="field is-grouped">
+                <div class="control select">
+                    <select name="parent">
+                        <option value="0">(top-level)</option>
+                        {% for group in unit.groupTree() %}
+                            {% include "unit.config.groups.parentTree.twig" with {x: group, selected: x.parent} %}
+                        {% endfor %}
+                    </select>
+                </div>
+                <p class="control">
+                    <input class="input" type="number" min="-32768" max="32767" name="weight" required="required" style="max-width: 5em;" value="{{ x.weight }}"/>
+                </p>
+                <p class="control is-expanded">
+                    <input class="input" type="text" maxlength="64" name="name" required="required" value="{{ x.name }}"/>
+                </p>
+                <p class="control">
+                    <input class="input" type="color" name="color" value="{{ x.color }}" style="min-width:3em;"/>
+                </p>
+                <p class="control">
+                    <input class="button is-link" type="submit" name="group_edit" value="Edit"/>
+                </p>
+                <p class="control">
+                    <input class="button is-danger" type="submit" name="group_delete" value="Delete"/>
+                </p>
+            </div>
+            <input type="hidden" name="csrf" value="{{ csrf }}"/>
+        </form>
+        {% for group in x.childs %}
+            {% include "unit.config.groups.each.twig" with {x: group} %}
+        {% endfor %}
+    </div>
+</div>

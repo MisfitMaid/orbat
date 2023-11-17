@@ -77,3 +77,8 @@ $fa-font-path: "/css/forkawesome/fonts";
     fill: $navbar-item-hover-color;
   }
 }
+
+.media + .media {
+  margin-top: initial;
+  padding-top: initial;
+}

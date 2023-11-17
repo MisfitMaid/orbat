@@ -18,22 +18,28 @@
         <a class="button is-link" href="/unit/{{ unit.idUnit|snowflake }}/roster/add">Add a member</a>
     {% endif %}
 
-    <table class="table is-striped is-narrow is-hoverable is-fullwidth">
+    <table class="table is-striped is-hoverable is-fullwidth">
         <thead>
         <tr>
-            <th>Rank</th>
+            <th class="is-narrow">Rank</th>
             <th>Name</th>
             <th>Joined</th>
-            <th>Actions</th>
+            <th class="is-narrow">Actions</th>
         </tr>
         </thead>
         <tbody>
         {% for member in unit.members %}
             <tr>
-                <td>{{ member.rank.abbr }}</td>
-                <td>{{ member.name }}</td>
-                <td>{{ member.dateJoined.toDateString() }}</td>
+                <td class="is-narrow nowrap">{{ member.rank.abbr }}</td>
                 <td>
+                    {{ member.name }}
+                    {% for me in member.endorsements %}
+                        <span class="tag is-info">{{ me.endorsement.abbr }}</span>
+                    {% endfor %}
+                    <br/><span class="is-size-7 is-family-monospace">{{ member.getServiceID() }}</span>
+                </td>
+                <td>{{ member.dateJoined.toDateString() }}</td>
+                <td class="is-narrow nowrap">
                     <form method="post">
                         <input type="hidden" name="csrf" value="{{ csrf }}"/>
                         <input type="hidden" name="idMember" value="{{ member.idMember }}"/>
