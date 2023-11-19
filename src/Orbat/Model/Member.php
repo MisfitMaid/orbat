@@ -15,6 +15,7 @@ use Orbat\Snowflake;
  * @property int $idUnit
  * @property int $idRank
  * @property string $name
+ * @property string $role
  * @property ?Carbon $dateJoined
  * @property ?Carbon $dateLastPromotion
  * @property ?string $remarks

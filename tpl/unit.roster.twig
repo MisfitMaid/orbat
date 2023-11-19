@@ -23,6 +23,7 @@
         <tr>
             <th class="is-narrow">Rank</th>
             <th>Name</th>
+            <th>Role</th>
             <th>Joined</th>
             <th class="is-narrow">Actions</th>
         </tr>
@@ -38,6 +39,7 @@
                     {% endfor %}
                     <br/><span class="is-size-7 is-family-monospace">{{ member.getServiceID() }}</span>
                 </td>
+                <td>{{ member.role }}</td>
                 <td>{{ member.dateJoined.toDateString() }}</td>
                 <td class="is-narrow nowrap">
                     <form method="post">

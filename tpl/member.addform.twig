@@ -16,6 +16,19 @@
 
     <div class="field is-horizontal">
         <div class="field-label is-normal">
+            <label class="label" for="role">Role title</label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+                <div class="control">
+                    <input class="input" type="text" name="role" id="role" required="required" value="{{ member.role }}"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="field is-horizontal">
+        <div class="field-label is-normal">
             <label class="label" for="dateJoined">Date Joined</label>
         </div>
         <div class="field-body">
