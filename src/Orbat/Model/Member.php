@@ -14,6 +14,7 @@ use Orbat\Snowflake;
  * @property int $idMember
  * @property int $idUnit
  * @property int $idRank
+ * @property int $idGroup
  * @property string $name
  * @property string $role
  * @property ?Carbon $dateJoined
@@ -25,6 +26,7 @@ use Orbat\Snowflake;
  *
  * @property Unit $unit
  * @property Rank $rank
+ * @property Group $group
  * @property MemberEndorsement[] $endorsements
  */
 class Member extends \Orbat\Model
@@ -44,6 +46,7 @@ class Member extends \Orbat\Model
         return [
             'unit' => [BELONGS_TO, "Orbat\Model\Unit", 'idUnit'],
             'rank' => [BELONGS_TO, "Orbat\Model\Rank", 'idRank'],
+            'group' => [BELONGS_TO, "Orbat\Model\Group", 'idGroup'],
             'endorsements' => [HAS_MANY, "Orbat\Model\MemberEndorsement", 'idMember'],
         ];
     }

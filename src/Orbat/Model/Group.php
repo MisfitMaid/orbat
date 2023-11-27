@@ -27,7 +27,7 @@ class Group extends \Orbat\Model
 {
     public static function tablename()
     {
-        return 'squads';
+        return 'squads'; // "groups" is an sql reserved word
     }
 
     public static function primarykey()

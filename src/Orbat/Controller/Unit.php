@@ -88,6 +88,17 @@ class Unit extends Controller
                     return false;
                 }
 
+                /** @var Group $group */
+                if ($_POST['group'] != 0) {
+                    $group = Group::findByPk($_POST['group']);
+                    if (!$group || $group->idUnit != $this->unit->idUnit) {
+                        $this->displayError("Invalid group");
+                        return false;
+                    }
+                } else {
+                    $group = null;
+                }
+
                 /** @var Endorsement[] $endorsements */
                 $endorsements = [];
                 foreach ($_POST['endorsements'] ?? [] as $v) {
@@ -103,13 +114,17 @@ class Unit extends Controller
                     $mem = new Member();
                     $mem->idUnit = $this->unit->idUnit;
                     $mem->idRank = $rank->idRank;
+                    if (!is_null($group)) {
+                        $mem->idGroup = $group->idGroup;
+                    }
                     $mem->name = trim($_POST['name']);
                     $mem->role = trim($_POST['role'] ?? "");
                     $mem->dateJoined = new Carbon($_POST['dateJoined']);
                     $mem->dateLastPromotion = $mem->dateJoined;
                     $mem->remarks = trim($_POST['remarks']);
                     $mem->remarksInternal = trim($_POST['remarksInternal']);
-                    $mem->idMember = Snowflake::generate();
+                    $snow = Snowflake::generate();
+                    $mem->idMember = $snow;
                     $mem->save();
 
                     // add our endorsements
@@ -122,7 +137,7 @@ class Unit extends Controller
 
                     $this->redirect(sprintf("/unit/%s/roster/%s",
                         Snowflake::format($this->unit->idUnit),
-                        Snowflake::format($mem->idMember)));
+                        Snowflake::format($snow)));
                 } else {
                     $editMember->name = trim($_POST['name']);
                     $editMember->role = trim($_POST['role'] ?? "");
@@ -132,6 +147,11 @@ class Unit extends Controller
                     if ($editMember->idRank != $rank->idRank) {
                         $editMember->idRank = $rank->idRank;
                         $editMember->dateLastPromotion = Carbon::now();
+                    }
+                    if (!is_null($group)) {
+                        $editMember->idGroup = $group->idGroup;
+                    } else {
+                        $editMember->idGroup = null;
                     }
 
                     foreach ($this->unit->endorsements as $endorsement) {
