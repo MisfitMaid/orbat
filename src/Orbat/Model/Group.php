@@ -20,6 +20,7 @@ use Carbon\Carbon;
  * @property Carbon $dateUpdated
  *
  * @property Unit $unit
+ * @property Member[] $members
  * @property ?self $parent
  * @property self[] $childs
  */
@@ -41,7 +42,24 @@ class Group extends \Orbat\Model
             'unit' => [BELONGS_TO, "Orbat\Model\Unit", 'idUnit'],
             'parent' => [BELONGS_TO, self::class, 'idParent'],
             'childs' => [HAS_MANY, self::class, 'idParent', ['order' => 'asc', 'orderby' => 'weight']],
+            'members' => [HAS_MANY, "Orbat\Model\Member", 'idGroup'],
         ];
+    }
+
+    /**
+     * @return Member[]
+     */
+    public function membersSorted(): array
+    {
+        $mems = $this->members;
+        usort($mems, function (Member $a, Member $b) {
+            $rank = $a->rank->weight <=> $b->rank->weight;
+            if ($rank == 0) {
+                return $a->dateJoined <=> $b->dateJoined;
+            }
+            return $rank;
+        });
+        return $mems;
     }
 
     public function depth(): int
@@ -50,6 +68,19 @@ class Group extends \Orbat\Model
             return 0;
         } else {
             return $this->parent->depth() + 1;
+        }
+    }
+
+    public function getColorPair(): string
+    {
+        $r = hexdec(substr($this->color, 1, 2)) / 0xff;
+        $g = hexdec(substr($this->color, 3, 2)) / 0xff;
+        $b = hexdec(substr($this->color, 5, 2)) / 0xff;
+        $luma = 0.299 * $r + 0.587 * $g + 0.114 * $b;
+        if ($luma > 0.5) {
+            return "#000";
+        } else {
+            return "#fff";
         }
     }
 
