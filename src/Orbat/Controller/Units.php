@@ -2,9 +2,9 @@
 
 namespace Orbat\Controller;
 
-use Intervention\Image\ImageManager;
 use Nin\Nin;
 use Orbat\Controller;
+use Orbat\FileUtilities;
 use Orbat\Model\Unit;
 use Orbat\Model\UnitEditor;
 use Orbat\Snowflake;
@@ -48,19 +48,12 @@ class Units extends Controller
             $unit->idUnit = Snowflake::generate();
 
             if (array_key_exists('icon', $_FILES)) {
-                $file = $_FILES['icon'];
-
-                if (!in_array($file['type'], ['image/png', 'image/jpeg'])) {
-                    $this->displayError('invalid image format');
+                try {
+                    $unit->icon = FileUtilities::sanitizeUpload($_FILES['icon'], 256, 256);
+                } catch (\Exception $e) {
+                    $this->displayError($e->getMessage());
                     return false;
                 }
-
-                $manager = new ImageManager();
-                $img = $manager->make($file['tmp_name']);
-                $img->fit(256, 256, function ($constraint) {
-                    $constraint->upsize();
-                });
-                $unit->icon = base64_encode($img->encode("png"));
             }
 
             $editor = new UnitEditor();

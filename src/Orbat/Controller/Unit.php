@@ -3,9 +3,9 @@
 namespace Orbat\Controller;
 
 use Carbon\Carbon;
-use Intervention\Image\ImageManager;
 use Nin\Nin;
 use Orbat\Controller;
+use Orbat\FileUtilities;
 use Orbat\Model\Endorsement;
 use Orbat\Model\Group;
 use Orbat\Model\Member;
@@ -274,19 +274,12 @@ class Unit extends Controller
                 }
 
                 if (array_key_exists('icon', $_FILES)) {
-                    $file = $_FILES['icon'];
-
-                    if (!in_array($file['type'], ['image/png', 'image/jpeg'])) {
-                        $this->displayError('invalid image format');
+                    try {
+                        $this->unit->icon = FileUtilities::sanitizeUpload($_FILES['icon'], 256, 256);
+                    } catch (\Exception $e) {
+                        $this->displayError($e->getMessage());
                         return false;
                     }
-
-                    $manager = new ImageManager();
-                    $img = $manager->make($file['tmp_name']);
-                    $img->fit(256, 256, function ($constraint) {
-                        $constraint->upsize();
-                    });
-                    $this->unit->icon = base64_encode($img->encode("png"));
                 }
                 $this->unit->save();
             }
