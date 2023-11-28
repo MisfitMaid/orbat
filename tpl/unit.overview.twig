@@ -1,24 +1,26 @@
 {% extends "base.twig" %}
 
+{% block titleIconURL %}{% if unit.icon %}/unit/{{ unit.idUnit|snowflake }}/icon{% endif %}{% endblock %}
 {% block title %}{{ unit.name }}{% endblock title %}
 
 {% block content %}
     <div class="tabs is-fullwidth">
         <ul>
-            <li class="is-active"><a href="/unit/{{ unit.idUnit|snowflake }}">Overview</a></li>
-            <li><a href="/unit/{{ unit.idUnit|snowflake }}/roster">Roster</a></li>
-            <li><a href="/unit/{{ unit.idUnit|snowflake }}/operations">Operations</a></li>
+            <li {% if activeMenu == "overview" %}class="is-active"{% endif %}><a href="/unit/{{ unit.idUnit|snowflake }}">Overview</a></li>
+            <li {% if activeMenu == "roster" %}class="is-active"{% endif %}><a href="/unit/{{ unit.idUnit|snowflake }}/roster">Roster</a></li>
+            <li {% if activeMenu == "ops" %}class="is-active"{% endif %}><a href="/unit/{{ unit.idUnit|snowflake }}/operations">Operations</a></li>
             {% if canEdit %}
-                <li><a href="/unit/{{ unit.idUnit|snowflake }}/config">Configuration</a></li>
+                <li {% if activeMenu == "config" %}class="is-active"{% endif %}><a href="/unit/{{ unit.idUnit|snowflake }}/config">Configuration</a></li>
             {% endif %}
         </ul>
     </div>
-
-    <table class="table is-fullwidth">
-        <tbody>
-        {% for group in unit.groupTree() %}
-            {% include "unit.overview.group.twig" with {x: group} %}
-        {% endfor %}
-        </tbody>
-    </table>
+    {% block unitContent %}
+        <table class="table is-fullwidth">
+            <tbody>
+            {% for group in unit.groupTree() %}
+                {% include "unit.overview.group.twig" with {x: group} %}
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endblock %}
 {% endblock %}

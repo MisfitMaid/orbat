@@ -81,19 +81,34 @@
                 {% if block("customTitle") is defined %}
                     {{ block("customTitle") }}
                 {% else %}
-                    <h2 class="title">{{ block("title") }}</h2>
+                    <div class="level is-mobile">
+                        <div class="level-left">
+                            {% if block("titleIconURL") is defined and block("titleIconURL")|length > 0 %}
+                                <div class="level-item">
+                                    <figure class="image is-32x32">
+                                        <img class="is-rounded" src="{{ block("titleIconURL") }}" alt="User avatar"
+                                             referrerpolicy="no-referrer"/>
+                                    </figure>
+                                </div>
+                            {% endif %}
+                            <div class="level-item">
+                                <h2 class="title">{{ block("title") }}</h2>
+                            </div>
+                        </div>
+                        {% if breadcrumb is defined %}
+                            <div class="level-right">
+                                <nav class="breadcrumb" aria-label="breadcrumbs">
+                                    <ul>
+                                        {% for x in breadcrumb %}
+                                            <li><a href="{{ x.a }}">{{ x.text }}</a></li>
+                                        {% endfor %}
+                                    </ul>
+                                </nav>
+                            </div>
+                        {% endif %}
+                    </div>
                 {% endif %}
             {% endif %}
-            {% if breadcrumb is defined %}
-                <nav class="breadcrumb" aria-label="breadcrumbs">
-                    <ul>
-                        {% for x in breadcrumb %}
-                            <li><a href="{{ x.a }}">{{ x.text }}</a></li>
-                        {% endfor %}
-                    </ul>
-                </nav>
-            {% endif %}
-
             {% block content %}{% endblock content %}
         </div>
     </div>

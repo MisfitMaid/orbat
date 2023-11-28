@@ -1,18 +1,7 @@
-{% extends "base.twig" %}
+{% extends "unit.overview.twig" %}
 
-{% block title %}{{ unit.name }}{% endblock title %}
+{% block title %}{{ unit.name }} - Operations{% endblock title %}
 
-{% block content %}
-    <div class="tabs is-fullwidth">
-        <ul>
-            <li><a href="/unit/{{ unit.idUnit|snowflake }}">Overview</a></li>
-            <li><a href="/unit/{{ unit.idUnit|snowflake }}/roster">Roster</a></li>
-            <li class="is-active"><a href="/unit/{{ unit.idUnit|snowflake }}/operations">Operations</a></li>
-            {% if canEdit %}
-                <li><a href="/unit/{{ unit.idUnit|snowflake }}/config">Configuration</a></li>
-            {% endif %}
-        </ul>
-    </div>
-
+{% block unitContent %}
     todo
 {% endblock %}

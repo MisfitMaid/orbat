@@ -51,11 +51,21 @@ class Unit extends Controller
 
     public function actionOverview()
     {
+        $this->twig->addGlobal("activeMenu", "overview");
         $this->render("unit.overview");
+    }
+
+    public function actionOperations()
+    {
+        $this->twig->addGlobal("activeMenu", "ops");
+        $this->addBreadcrumb("Operations", sprintf("/unit/%s/operations",
+            Snowflake::format($this->unit->idUnit)));
+        $this->render("unit.operations");
     }
 
     public function actionRoster()
     {
+        $this->twig->addGlobal("activeMenu", "roster");
         $this->addBreadcrumb("Roster", sprintf("/unit/%s/roster",
             Snowflake::format($this->unit->idUnit)));
         $this->render("unit.roster");
@@ -63,6 +73,7 @@ class Unit extends Controller
 
     public function actionMemberAdd($idMember = null)
     {
+        $this->twig->addGlobal("activeMenu", "roster");
         $this->addBreadcrumb("Roster", sprintf("/unit/%s/roster",
             Snowflake::format($this->unit->idUnit)));
 
@@ -229,8 +240,24 @@ class Unit extends Controller
         }
     }
 
+    public function actionIcon()
+    {
+        if (is_null($this->unit->icon)) {
+            $this->displayError('Unit has no icon.', 404);
+            return false;
+        }
+
+        $av = base64_decode($this->unit->icon);
+
+        header("Content-Type: image/png");
+        header('Content-Length: ' . strlen($av));
+        header("Digest: sha256-" . base64_encode(hash("sha256", $av, true)));
+        echo $av;
+    }
+
     public function actionConfig()
     {
+        $this->twig->addGlobal("activeMenu", "config");
         $this->addBreadcrumb("Configuration", sprintf("/unit/%s/config",
             Snowflake::format($this->unit->idUnit)));
         if ($this->canEdit) {
@@ -275,6 +302,7 @@ class Unit extends Controller
 
     public function actionConfigRanks()
     {
+        $this->twig->addGlobal("activeMenu", "config");
         $this->addBreadcrumb("Configuration", sprintf("/unit/%s/config",
             Snowflake::format($this->unit->idUnit)));
         if ($this->canEdit) {
@@ -341,6 +369,7 @@ class Unit extends Controller
 
     public function actionConfigGroups()
     {
+        $this->twig->addGlobal("activeMenu", "config");
         $this->addBreadcrumb("Configuration", sprintf("/unit/%s/config",
             Snowflake::format($this->unit->idUnit)));
         if ($this->canEdit) {
@@ -413,6 +442,7 @@ class Unit extends Controller
 
     public function actionConfigEndorsements()
     {
+        $this->twig->addGlobal("activeMenu", "config");
         $this->addBreadcrumb("Configuration", sprintf("/unit/%s/config",
             Snowflake::format($this->unit->idUnit)));
         if ($this->canEdit) {
