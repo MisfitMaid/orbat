@@ -16,7 +16,7 @@
 {% for member in x.membersSorted() %}
     <tr>
         <td style="padding-left: {{ x.depth()+0.5 }}em;">{{ member.role }}</td>
-        <td class="is-narrow nowrap" title="{{ member.rank.name }}">{{ member.rank.abbr }}</td>
+        <td class="is-narrow nowrap">{{ include('rankIconInline.twig', {rank: member.rank}) }}</td>
         <td>{{ member.name }}</td>
         <td>
             {% for me in member.endorsements %}

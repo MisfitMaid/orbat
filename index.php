@@ -36,6 +36,7 @@ namespace Orbat {
     nf_route("/unit/:idUnit", "Orbat\Controller\Unit.Overview");
     nf_route("/unit/:idUnit/roster", "Orbat\Controller\Unit.Roster");
     nf_route("/unit/:idUnit/icon", "Orbat\Controller\Unit.Icon");
+    nf_route("/unit/:idUnit/ranks/:idRank/icon", "Orbat\Controller\Unit.RankIcon");
     nf_route("/unit/:idUnit/roster/:idMember", "Orbat\Controller\Unit.MemberAdd");
     nf_route("/unit/:idUnit/operations", "Orbat\Controller\Unit.Operations");
     nf_route("/unit/:idUnit/config", "Orbat\Controller\Unit.Config");

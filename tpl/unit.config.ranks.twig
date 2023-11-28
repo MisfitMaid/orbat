@@ -7,20 +7,38 @@
             <th>Weight</th>
             <th>Abbreviation</th>
             <th>Name</th>
+            <th colspan="2">Icon (64x64)</th>
             <th>Actions</th>
         </tr>
         </thead>
         <tbody>
-        <!-- foreach -->
         {% for rank in unit.ranks %}
-            <form method="post">
+            <form method="post" enctype="multipart/form-data">
                 <input type="hidden" name="csrf" value="{{ csrf }}"/>
                 <input type="hidden" name="idRank" value="{{ rank.idRank }}"/>
                 <tr>
                     <td><input class="input" type="number" min="-32768" max="32767" name="weight" required="required" value="{{ rank.weight }}"/></td>
                     <td><input class="input" type="text" maxlength="16" name="abbr" required="required" value="{{ rank.abbr }}"/></td>
                     <td><input class="input" type="text" maxlength="64" name="name" required="required" value="{{ rank.name }}"/></td>
-                    <td><input class="button is-link" type="submit" name="rank_edit" value="Edit"/><input class="button is-danger" type="submit" name="rank_delete" value="Delete"/></td>
+                    <td>
+                        {% if rank.icon is defined %}
+                            <figure class="image is-32x32">
+                                <img src="/unit/{{ unit.idUnit|snowflake }}/ranks/{{ rank.idRank|snowflake }}/icon" alt="{{ rank.name }}" referrerpolicy="no-referrer"/>
+                            </figure>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <div class="file">
+                            <label class="file-label">
+                                <input class="file-input" type="file" name="icon" id="icon" accept="image/png, image/jpeg"/>
+                                <span class="file-cta">
+                                        <span class="file-icon"><i class="fa fa-file-image-o"></i></span>
+                                        <span class="file-label">Icon</span>
+                                    </span>
+                            </label>
+                        </div>
+                    </td>
+                    <td class="nowrap"><input class="button is-link" type="submit" name="rank_edit" value="Edit"/><input class="button is-danger" type="submit" name="rank_delete" value="Delete"/></td>
                 </tr>
             </form>
         {% endfor %}
@@ -30,6 +48,18 @@
                 <td><input class="input" type="number" min="-32768" max="32767" name="weight" required="required"/></td>
                 <td><input class="input" type="text" maxlength="16" name="abbr" required="required"/></td>
                 <td><input class="input" type="text" maxlength="64" name="name" required="required"/></td>
+                <td></td>
+                <td>
+                    <div class="file">
+                        <label class="file-label">
+                            <input class="file-input" type="file" name="icon" id="icon" accept="image/png, image/jpeg"/>
+                            <span class="file-cta">
+                                <span class="file-icon"><i class="fa fa-file-image-o"></i></span>
+                                <span class="file-label">Icon</span>
+                            </span>
+                        </label>
+                    </div>
+                </td>
                 <td><input class="button is-link" type="submit" name="rank_new" value="Create new rank"/></td>
             </tr>
         </form>

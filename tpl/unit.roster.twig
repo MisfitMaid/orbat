@@ -20,7 +20,7 @@
         <tbody>
         {% for member in unit.members %}
             <tr>
-                <td class="is-narrow nowrap">{{ member.rank.abbr }}</td>
+                <td class="is-narrow nowrap">{{ include('rankIconInline.twig', {rank: member.rank}) }}</td>
                 <td>
                     {{ member.name }}
                     {% for me in member.endorsements %}

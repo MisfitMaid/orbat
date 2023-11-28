@@ -1,0 +1,11 @@
+<span title="{{ rank.name }}" class="icon-text is-flex-wrap-nowrap">
+{% if rank.icon is defined %}
+    <span class="icon">
+    <figure class="image is-24x24">
+        <img src="/unit/{{ rank.idUnit|snowflake }}/ranks/{{ rank.idRank|snowflake }}/icon" alt="{{ rank.name }}" referrerpolicy="no-referrer"/>
+    </figure>
+        </span>
+{% endif %}
+    <span>{{ rank.abbr }}</span>
+</span>
+

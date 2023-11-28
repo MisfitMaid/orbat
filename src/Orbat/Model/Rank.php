@@ -15,6 +15,7 @@ use Carbon\Carbon;
  * @property int $weight
  * @property string $abbr
  * @property string $name
+ * @property string $icon
  * @property Carbon $dateCreated
  * @property Carbon $dateUpdated
  *

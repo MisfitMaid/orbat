@@ -255,6 +255,27 @@ class Unit extends Controller
         echo $av;
     }
 
+    public function actionRankIcon($idRank)
+    {
+        /** @var Rank $rank */
+        $rank = Rank::findByPk(Snowflake::parse($idRank));
+        if (!$rank || $rank->idUnit != $this->unit->idUnit) {
+            $this->displayError("Invalid Rank ID");
+            return false;
+        }
+
+        if (!$rank->icon) {
+            $this->displayError("No rank icon", 404);
+        }
+
+        $av = base64_decode($rank->icon);
+
+        header("Content-Type: image/png");
+        header('Content-Length: ' . strlen($av));
+        header("Digest: sha256-" . base64_encode(hash("sha256", $av, true)));
+        echo $av;
+    }
+
     public function actionConfig()
     {
         $this->twig->addGlobal("activeMenu", "config");
@@ -321,6 +342,16 @@ class Unit extends Controller
                     $r->weight = $weight;
                     $r->abbr = $abbr;
                     $r->name = $name;
+
+                    if (array_key_exists('icon', $_FILES)) {
+                        try {
+                            $r->icon = FileUtilities::sanitizeUpload($_FILES['icon'], 64, 64);
+                        } catch (\Exception $e) {
+                            $this->displayError($e->getMessage());
+                            return false;
+                        }
+                    }
+
                     $r->save();
                 }
 
@@ -335,6 +366,16 @@ class Unit extends Controller
                     $rank->weight = $weight;
                     $rank->abbr = $abbr;
                     $rank->name = $name;
+
+                    if (array_key_exists('icon', $_FILES)) {
+                        try {
+                            $rank->icon = FileUtilities::sanitizeUpload($_FILES['icon'], 64, 64);
+                        } catch (\Exception $e) {
+                            $this->displayError($e->getMessage());
+                            return false;
+                        }
+                    }
+
                     $rank->save();
                 }
 
