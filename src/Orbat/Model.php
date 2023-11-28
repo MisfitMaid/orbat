@@ -9,19 +9,8 @@ namespace Orbat;
 
 use Carbon\Carbon;
 
-class Model extends \Nin\Model
+class Model extends \Nin\Model implements \JsonSerializable
 {
-
-    public function __get($name)
-    {
-        if (in_array($name, ['dateCreated', 'dateUpdated', 'dateJoined', 'dateLastPromotion'])) {
-            return new Carbon(parent::__get($name));
-        } elseif (str_starts_with($name, "is")) {
-            return (bool)parent::__get($name);
-        } else {
-            return parent::__get($name);
-        }
-    }
 
     public function __isset($name)
     {
@@ -44,5 +33,29 @@ class Model extends \Nin\Model
 
         // Nothing found
         return false;
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        $data = [];
+        foreach ($this->_data as $k => $v) {
+            if (in_array($k, ["icon", "image"])) {
+                $data[$k] = !is_null($v);
+            } else {
+                $data[$k] = $this->__get($k);
+            }
+        }
+        return $data;
+    }
+
+    public function __get($name)
+    {
+        if (in_array($name, ['dateCreated', 'dateUpdated', 'dateJoined', 'dateLastPromotion'])) {
+            return new Carbon(parent::__get($name));
+        } elseif (str_starts_with($name, "is")) {
+            return (bool)parent::__get($name);
+        } else {
+            return parent::__get($name);
+        }
     }
 }
