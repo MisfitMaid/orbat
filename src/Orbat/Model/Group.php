@@ -53,9 +53,9 @@ class Group extends \Orbat\Model
     {
         $mems = $this->members;
         usort($mems, function (Member $a, Member $b) {
-            $rank = $a->rank->weight <=> $b->rank->weight;
+            $rank = $b->rank->weight <=> $a->rank->weight;
             if ($rank == 0) {
-                return $a->dateJoined <=> $b->dateJoined;
+                return $b->dateJoined <=> $a->dateJoined;
             }
             return $rank;
         });
