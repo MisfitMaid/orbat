@@ -41,6 +41,15 @@ class Member extends \Orbat\Model
         return 'idMember';
     }
 
+    public static function memberSortFunc(Member $a, Member $b): int
+    {
+        $rank = $b->rank->weight <=> $a->rank->weight;
+        if ($rank == 0) {
+            return $a->dateJoined <=> $b->dateJoined;
+        }
+        return $rank;
+    }
+
     public function relations()
     {
         return [

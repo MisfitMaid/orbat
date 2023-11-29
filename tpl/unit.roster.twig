@@ -18,7 +18,7 @@
         </tr>
         </thead>
         <tbody>
-        {% for member in unit.members %}
+        {% for member in unit.membersSorted() %}
             <tr>
                 <td class="is-narrow nowrap">{{ include('rankIconInline.twig', {rank: member.rank}) }}</td>
                 <td>

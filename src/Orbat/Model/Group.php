@@ -52,13 +52,7 @@ class Group extends \Orbat\Model
     public function membersSorted(): array
     {
         $mems = $this->members;
-        usort($mems, function (Member $a, Member $b) {
-            $rank = $b->rank->weight <=> $a->rank->weight;
-            if ($rank == 0) {
-                return $b->dateJoined <=> $a->dateJoined;
-            }
-            return $rank;
-        });
+        usort($mems, ["Orbat\\Model\\Member", "memberSortFunc"]);
         return $mems;
     }
 

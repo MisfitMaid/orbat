@@ -59,4 +59,14 @@ class Unit extends \Orbat\Model
         return $tree;
     }
 
+    /**
+     * @return Member[]
+     */
+    public function membersSorted(): array
+    {
+        $mems = $this->members;
+        usort($mems, ["\\Orbat\\Model\\Member", "memberSortFunc"]);
+        return $mems;
+    }
+
 }
