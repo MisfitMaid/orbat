@@ -16,6 +16,7 @@ use Orbat\Snowflake;
  * @property int $idRank
  * @property int $idGroup
  * @property string $name
+ * @property string $playerName
  * @property string $role
  * @property ?Carbon $dateJoined
  * @property ?Carbon $dateLastPromotion

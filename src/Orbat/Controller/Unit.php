@@ -130,6 +130,7 @@ class Unit extends Controller
                     }
                     $mem->name = trim($_POST['name']);
                     $mem->role = trim($_POST['role'] ?? "");
+                    $mem->playerName = trim($_POST['player'] ?? "");
                     $mem->dateJoined = new Carbon($_POST['dateJoined']);
                     $mem->dateLastPromotion = $mem->dateJoined;
                     $mem->remarks = trim($_POST['remarks']);
@@ -152,6 +153,7 @@ class Unit extends Controller
                 } else {
                     $editMember->name = trim($_POST['name']);
                     $editMember->role = trim($_POST['role'] ?? "");
+                    $editMember->playerName = trim($_POST['player'] ?? "");
                     $editMember->dateJoined = new Carbon($_POST['dateJoined']);
                     $editMember->remarks = trim($_POST['remarks']);
                     $editMember->remarksInternal = trim($_POST['remarksInternal']);
@@ -222,6 +224,7 @@ class Unit extends Controller
                 $empty->idRank = 0;
                 $empty->name = "";
                 $empty->role = "";
+                $empty->playerName = "";
                 $empty->dateJoined = Carbon::now();
                 $empty->dateLastPromotion = Carbon::now();
                 $empty->remarks = "";

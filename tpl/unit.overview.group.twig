@@ -1,5 +1,5 @@
 <tr>
-    <td colspan="6" style="padding-left: {{ x.depth()+0.5 }}em;background-color:{{ x.color }};color:{{ x.getColorPair() }}">
+    <td colspan="7" style="padding-left: {{ x.depth()+0.5 }}em;background-color:{{ x.color }};color:{{ x.getColorPair() }}">
         {{ x.name }}
     </td>
 </tr>
@@ -10,6 +10,7 @@
         <th>Name</th>
         <th>Endorsements</th>
         <th>Date Joined</th>
+        <th>Player</th>
         <th>Service ID</th>
     </tr>
 {% endif %}
@@ -24,9 +25,8 @@
             {% endfor %}
         </td>
         <td title="Last promotion: {{ member.dateLastPromotion.toDateString() }}">{{ member.dateJoined.toDateString() }}</td>
-        <td>
-            <span class="is-size-7 is-family-monospace">{{ member.getServiceID() }}</span>
-        </td>
+        <td>{{ member.playerName }}</td>
+        <td><span class="is-size-7 is-family-monospace">{{ member.getServiceID() }}</span></td>
     </tr>
 {% endfor %}
 
