@@ -8,19 +8,19 @@
             <aside class="menu">
                 <p class="menu-label">General</p>
                 <ul class="menu-list">
-                    <li><a href="/unit/{{ unit.idUnit|snowflake }}/config">Unit information</a></li>
-                    <li><a href="/unit/{{ unit.idUnit|snowflake }}/config/editors">Editor management</a></li>
+                    <li><a href="/unit/{{ unit.slug() }}/config">Unit information</a></li>
+                    <li><a href="/unit/{{ unit.slug() }}/config/editors">Editor management</a></li>
                 </ul>
                 <p class="menu-label">Personnel Management</p>
                 <ul class="menu-list">
-                    <li><a href="/unit/{{ unit.idUnit|snowflake }}/config/ranks">Ranks</a></li>
-                    <li><a href="/unit/{{ unit.idUnit|snowflake }}/config/endorsements">Endorsements</a></li>
-                    <!-- <li><a href="/unit/{{ unit.idUnit|snowflake }}/config/medals">Medals</a></li> -->
-                    <!-- <li><a href="/unit/{{ unit.idUnit|snowflake }}/config/sids">Service IDs</a></li> -->
+                    <li><a href="/unit/{{ unit.slug() }}/config/ranks">Ranks</a></li>
+                    <li><a href="/unit/{{ unit.slug() }}/config/endorsements">Endorsements</a></li>
+                    <!-- <li><a href="/unit/{{ unit.slug() }}/config/medals">Medals</a></li> -->
+                    <!-- <li><a href="/unit/{{ unit.slug() }}/config/sids">Service IDs</a></li> -->
                 </ul>
                 <p class="menu-label">Unit Structure</p>
                 <ul class="menu-list">
-                    <li><a href="/unit/{{ unit.idUnit|snowflake }}/config/groups">Groups</a></li>
+                    <li><a href="/unit/{{ unit.slug() }}/config/groups">Groups</a></li>
                 </ul>
             </aside>
         </div>

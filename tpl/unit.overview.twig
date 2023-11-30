@@ -1,16 +1,16 @@
 {% extends "base.twig" %}
 
-{% block titleIconURL %}{% if unit.icon %}/unit/{{ unit.idUnit|snowflake }}/icon{% endif %}{% endblock %}
+{% block titleIconURL %}{% if unit.icon %}/unit/{{ unit.slug() }}/icon{% endif %}{% endblock %}
 {% block title %}{{ unit.name }}{% endblock title %}
 
 {% block content %}
     <div class="tabs is-fullwidth">
         <ul>
-            <li {% if activeMenu == "overview" %}class="is-active"{% endif %}><a href="/unit/{{ unit.idUnit|snowflake }}">Overview</a></li>
-            <li {% if activeMenu == "roster" %}class="is-active"{% endif %}><a href="/unit/{{ unit.idUnit|snowflake }}/roster">Roster</a></li>
-            <li {% if activeMenu == "ops" %}class="is-active"{% endif %}><a href="/unit/{{ unit.idUnit|snowflake }}/operations">Operations</a></li>
+            <li {% if activeMenu == "overview" %}class="is-active"{% endif %}><a href="/unit/{{ unit.slug() }}">Overview</a></li>
+            <li {% if activeMenu == "roster" %}class="is-active"{% endif %}><a href="/unit/{{ unit.slug() }}/roster">Roster</a></li>
+            <li {% if activeMenu == "ops" %}class="is-active"{% endif %}><a href="/unit/{{ unit.slug() }}/operations">Operations</a></li>
             {% if canEdit %}
-                <li {% if activeMenu == "config" %}class="is-active"{% endif %}><a href="/unit/{{ unit.idUnit|snowflake }}/config">Configuration</a></li>
+                <li {% if activeMenu == "config" %}class="is-active"{% endif %}><a href="/unit/{{ unit.slug() }}/config">Configuration</a></li>
             {% endif %}
         </ul>
     </div>

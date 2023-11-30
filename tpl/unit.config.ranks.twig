@@ -23,7 +23,7 @@
                     <td>
                         {% if rank.icon is defined %}
                             <figure class="image is-32x32">
-                                <img src="/unit/{{ unit.idUnit|snowflake }}/ranks/{{ rank.idRank|snowflake }}/icon" alt="{{ rank.name }}" referrerpolicy="no-referrer"/>
+                                <img src="/unit/{{ unit.slug() }}/ranks/{{ rank.idRank|snowflake }}/icon" alt="{{ rank.name }}" referrerpolicy="no-referrer"/>
                             </figure>
                         {% else %}
                             (none)

@@ -4,7 +4,7 @@
 
 {% block unitContent %}
     {% if canEdit %}
-        <a class="button is-link" href="/unit/{{ unit.idUnit|snowflake }}/roster/add">Add a member</a>
+        <a class="button is-link" href="/unit/{{ unit.slug() }}/roster/add">Add a member</a>
     {% endif %}
 
     <table class="table is-striped is-hoverable is-fullwidth">
@@ -36,7 +36,7 @@
                     <form method="post">
                         <input type="hidden" name="csrf" value="{{ csrf }}"/>
                         <input type="hidden" name="idMember" value="{{ member.idMember }}"/>
-                        <a class="button is-info" href="/unit/{{ unit.idUnit|snowflake }}/roster/{{ member.idMember|snowflake }}">Info</a>
+                        <a class="button is-info" href="/unit/{{ unit.slug() }}/roster/{{ member.idMember|snowflake }}">Info</a>
                         {% if canEdit %}
                             <input type="submit" class="button is-danger" name="delete" value="Delete"/>
                         {% endif %}
