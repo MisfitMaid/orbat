@@ -8,11 +8,13 @@
 namespace Orbat\Model;
 
 use Carbon\Carbon;
+use Orbat\Snowflake;
 
 /**
  * @property int $idUnit
  * @property string $name
  * @property ?string $icon
+ * @property ?string $slug
  * @property Carbon $dateCreated
  * @property Carbon $dateUpdated
  *
@@ -67,6 +69,14 @@ class Unit extends \Orbat\Model
         $mems = $this->members;
         usort($mems, ["\\Orbat\\Model\\Member", "memberSortFunc"]);
         return $mems;
+    }
+
+    public function slug(): string
+    {
+        if (isset($this->slug) && is_string($this->slug)) {
+            return $this->slug;
+        }
+        return Snowflake::format($this->idUnit);
     }
 
 }

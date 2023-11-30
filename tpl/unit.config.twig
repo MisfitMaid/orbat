@@ -44,6 +44,19 @@
 
                     <div class="field is-horizontal">
                         <div class="field-label is-normal">
+                            <label class="label" for="slug">Slug</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input class="input" type="text" name="slug" id="slug" required="required" value="{% if unit.slug is defined %}{{ unit.slug }}{% endif %}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
                             <label class="label" for="icon">Icon</label>
                         </div>
                         <div class="field-body">

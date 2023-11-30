@@ -8,7 +8,8 @@
     "sentry/sdk": "^3.5",
     "twig/intl-extra": "^3.6",
     "twig/twig": "^3.4",
-    "wohali/oauth2-discord-new": "^1.1"
+    "wohali/oauth2-discord-new": "^1.1",
+    "ext-intl": "*"
   },
   "config": {
     "optimize-autoloader": true,

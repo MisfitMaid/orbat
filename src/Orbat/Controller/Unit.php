@@ -23,6 +23,10 @@ class Unit extends Controller
     {
         parent::__construct();
         $this->unit = \Orbat\Model\Unit::findByPk(Snowflake::parse($idUnit));
+
+        if (!$this->unit) {
+            $this->unit = \Orbat\Model\Unit::findByAttributes(['slug' => $idUnit]);
+        }
     }
 
     public function beforeAction($action)
@@ -293,12 +297,29 @@ class Unit extends Controller
                 }
                 $this->unit->name = trim($_POST['name']);
 
+                $s = \Normalizer::normalize(mb_strtolower(trim($_POST['slug'] ?? "")));
+
+                if (str_contains($s, "/") || str_contains($s, "\\") || mb_strlen($s) > 32) {
+                    $this->displayError("Invalid slug (max 32 unicode chars, no / or \\ allowed");
+                    return false;
+                }
+
+                if ($s == "") {
+                    $this->unit->slug = null;
+                } else {
+                    if (\Orbat\Model\Unit::countByAttributes(["slug" => $s]) > 0) {
+                        $this->displayError("slug already in use");
+                        return false;
+                    }
+                    $this->unit->slug = $s;
+                }
+
                 if (mb_strlen($this->unit->name) == 0 || mb_strlen($this->unit->name) > 64) {
                     $this->displayError("Name is required, please try again", 400);
                     return false;
                 }
 
-                if (array_key_exists('icon', $_FILES)) {
+                if (array_key_exists('icon', $_FILES) && $_FILES['icon']['error'] != UPLOAD_ERR_NO_FILE) {
                     try {
                         $this->unit->icon = FileUtilities::sanitizeUpload($_FILES['icon'], 256, 256);
                     } catch (\Exception $e) {
@@ -307,6 +328,10 @@ class Unit extends Controller
                     }
                 }
                 $this->unit->save();
+            }
+
+            if (!isset($this->unit->slug)) {
+                $this->unit->slug = "";
             }
             $this->render("unit.config");
         } else {
