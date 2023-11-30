@@ -48,7 +48,7 @@ class Unit extends Controller
             }
         }
 
-        $this->addBreadcrumb($this->unit->name, "/unit/" . Snowflake::format($this->unit->idUnit));
+        $this->addBreadcrumb($this->unit->name, "/unit/" . $this->unit->slug());
         $this->twig->addGlobal("unit", $this->unit);
         $this->twig->addGlobal("canEdit", $this->canEdit);
         return $action;
@@ -64,7 +64,7 @@ class Unit extends Controller
     {
         $this->twig->addGlobal("activeMenu", "ops");
         $this->addBreadcrumb("Operations", sprintf("/unit/%s/operations",
-            Snowflake::format($this->unit->idUnit)));
+            $this->unit->slug()));
         $this->render("unit.operations");
     }
 
@@ -72,7 +72,7 @@ class Unit extends Controller
     {
         $this->twig->addGlobal("activeMenu", "roster");
         $this->addBreadcrumb("Roster", sprintf("/unit/%s/roster",
-            Snowflake::format($this->unit->idUnit)));
+            $this->unit->slug()));
         $this->render("unit.roster");
     }
 
@@ -80,7 +80,7 @@ class Unit extends Controller
     {
         $this->twig->addGlobal("activeMenu", "roster");
         $this->addBreadcrumb("Roster", sprintf("/unit/%s/roster",
-            Snowflake::format($this->unit->idUnit)));
+            $this->unit->slug()));
 
         if ($idMember != "add") {
             /** @var Member $editMember */
@@ -153,7 +153,7 @@ class Unit extends Controller
                     }
 
                     $this->redirect(sprintf("/unit/%s/roster/%s",
-                        Snowflake::format($this->unit->idUnit),
+                        $this->unit->slug(),
                         Snowflake::format($snow)));
                 } else {
                     $editMember->name = trim($_POST['name']);
@@ -199,7 +199,7 @@ class Unit extends Controller
                     $editMember->save();
 
                     $this->redirect(sprintf("/unit/%s/roster/%s",
-                        Snowflake::format($this->unit->idUnit),
+                        $this->unit->slug(),
                         Snowflake::format($editMember->idMember)));
                 }
                 return true;
@@ -208,7 +208,7 @@ class Unit extends Controller
             if ($idMember != "add") {
                 // editing a member
                 $this->addBreadcrumb($editMember->name, sprintf("/unit/%s/roster/%s",
-                    Snowflake::format($this->unit->idUnit),
+                    $this->unit->slug(),
                     Snowflake::format($editMember->idMember)));
 
                 $end = [];
@@ -222,7 +222,7 @@ class Unit extends Controller
             } else {
                 // adding a member
                 $this->addBreadcrumb("Add member", sprintf("/unit/%s/roster/new",
-                    Snowflake::format($this->unit->idUnit)));
+                    $this->unit->slug()));
 
                 $empty = new Member();
                 $empty->idUnit = $this->unit->idUnit;
@@ -288,7 +288,7 @@ class Unit extends Controller
     {
         $this->twig->addGlobal("activeMenu", "config");
         $this->addBreadcrumb("Configuration", sprintf("/unit/%s/config",
-            Snowflake::format($this->unit->idUnit)));
+            $this->unit->slug()));
         if ($this->canEdit) {
             if (isset($_POST['csrf'])) {
                 if ($_POST['csrf'] !== \Nin\Nin::getSession('csrf_token')) {
@@ -347,7 +347,7 @@ class Unit extends Controller
     {
         $this->twig->addGlobal("activeMenu", "config");
         $this->addBreadcrumb("Configuration", sprintf("/unit/%s/config",
-            Snowflake::format($this->unit->idUnit)));
+            $this->unit->slug()));
         if ($this->canEdit) {
             if (isset($_POST['csrf'])) {
                 if ($_POST['csrf'] !== \Nin\Nin::getSession('csrf_token')) {
@@ -434,7 +434,7 @@ class Unit extends Controller
     {
         $this->twig->addGlobal("activeMenu", "config");
         $this->addBreadcrumb("Configuration", sprintf("/unit/%s/config",
-            Snowflake::format($this->unit->idUnit)));
+            $this->unit->slug()));
         if ($this->canEdit) {
             if (isset($_POST['csrf'])) {
                 if ($_POST['csrf'] !== \Nin\Nin::getSession('csrf_token')) {
@@ -495,7 +495,7 @@ class Unit extends Controller
     {
         $this->twig->addGlobal("activeMenu", "config");
         $this->addBreadcrumb("Configuration", sprintf("/unit/%s/config",
-            Snowflake::format($this->unit->idUnit)));
+            $this->unit->slug()));
         if ($this->canEdit) {
             if (isset($_POST['csrf'])) {
                 if ($_POST['csrf'] !== \Nin\Nin::getSession('csrf_token')) {
@@ -568,7 +568,7 @@ class Unit extends Controller
     {
         $this->twig->addGlobal("activeMenu", "config");
         $this->addBreadcrumb("Configuration", sprintf("/unit/%s/config",
-            Snowflake::format($this->unit->idUnit)));
+            $this->unit->slug()));
         if ($this->canEdit) {
             if (isset($_POST['csrf'])) {
                 if ($_POST['csrf'] !== \Nin\Nin::getSession('csrf_token')) {
