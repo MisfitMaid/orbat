@@ -41,6 +41,7 @@ namespace Orbat {
     nf_route("/unit/:idUnit/operations", "Orbat\Controller\Unit.Operations");
     nf_route("/unit/:idUnit/config", "Orbat\Controller\Unit.Config");
     nf_route("/unit/:idUnit/config/ranks", "Orbat\Controller\Unit.ConfigRanks");
+    nf_route("/unit/:idUnit/config/editors", "Orbat\Controller\Unit.ConfigEditors");
     nf_route("/unit/:idUnit/config/groups", "Orbat\Controller\Unit.ConfigGroups");
     nf_route("/unit/:idUnit/config/endorsements", "Orbat\Controller\Unit.ConfigEndorsements");
 

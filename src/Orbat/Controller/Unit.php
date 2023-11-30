@@ -11,6 +11,7 @@ use Orbat\Model\Group;
 use Orbat\Model\Member;
 use Orbat\Model\MemberEndorsement;
 use Orbat\Model\Rank;
+use Orbat\Model\UnitEditor;
 use Orbat\Snowflake;
 
 class Unit extends Controller
@@ -395,6 +396,67 @@ class Unit extends Controller
 
             }
             $this->render("unit.config.ranks");
+        } else {
+            if (!Nin::user()) {
+                $this->redirect("/login");
+                return false;
+            }
+            $this->displayError("No permissions to edit unit", 403);
+        }
+    }
+
+    public function actionConfigEditors()
+    {
+        $this->twig->addGlobal("activeMenu", "config");
+        $this->addBreadcrumb("Configuration", sprintf("/unit/%s/config",
+            Snowflake::format($this->unit->idUnit)));
+        if ($this->canEdit) {
+            if (isset($_POST['csrf'])) {
+                if ($_POST['csrf'] !== \Nin\Nin::getSession('csrf_token')) {
+                    $this->displayError('Invalid token.');
+                    return false;
+                }
+
+                //stuff
+                if (isset($_POST['editor_add'])) {
+                    /** @var \Orbat\Model\User $user */
+                    $user = \Orbat\Model\User::findByAttributes(['username' => trim($_POST['username'] ?? "")]);
+
+                    if (!$user) {
+                        $this->displayError("unable to find user! make sure they've logged in at least once before.");
+                        return false;
+                    }
+
+                    foreach ($this->unit->editors as $ue) {
+                        if ($ue->idUser == $user->idUser) {
+                            $this->displayError("User is already an editor! aborting");
+                            return false;
+                        }
+                    }
+
+                    $ue = new UnitEditor();
+                    $ue->idUnit = $this->unit->idUnit;
+                    $ue->idUser = $user->idUser;
+                    $ue->save();
+
+                } elseif (isset($_POST['editor_remove'])) {
+                    /** @var UnitEditor $ue */
+                    $ue = UnitEditor::findByPk($_POST['idEditor']);
+
+                    if (!$ue || $ue->idUnit != $this->unit->idUnit) {
+                        $this->displayError("invalid editor ID");
+                        return false;
+                    }
+
+                    if (count($this->unit->editors) <= 1) {
+                        $this->displayError("Cannot remove the last editor! If you would like to nuke the unit, please get in touch and we can do it manually.");
+                        return false;
+                    }
+
+                    $ue->remove();
+                }
+            }
+            $this->render("unit.config.editors");
         } else {
             if (!Nin::user()) {
                 $this->redirect("/login");

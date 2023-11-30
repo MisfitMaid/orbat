@@ -1,0 +1,48 @@
+{% extends "unit.config.twig" %}
+
+{% block configContent %}
+    <table class="table is-fullwidth">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Display</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for ue in unit.editors %}
+            <form method="post">
+                <input type="hidden" name="csrf" value="{{ csrf }}"/>
+                <input type="hidden" name="idEditor" value="{{ ue.idUnitEditor }}"/>
+                <tr>
+                    <td>{{ ue.user.idUser }}</td>
+                    <td>{{ ue.user.username }}</td>
+                    <td>{{ include('userAvInline.twig', {user: ue.user}) }}</td>
+                    <td><input class="button is-danger" type="submit" name="editor_remove" value="Remove"/></td>
+                </tr>
+            </form>
+        {% endfor %}
+        <form method="post">
+            <input type="hidden" name="csrf" value="{{ csrf }}"/>
+            <tr>
+                <td colspan="3">
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label" for="username">Discord username</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input class="input" type="text" maxlength="64" name="username" required="required"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td><input class="button is-link" type="submit" name="editor_add" value="Add an Editor"/></td>
+            </tr>
+        </form>
+        </tbody>
+    </table>
+{% endblock %}
