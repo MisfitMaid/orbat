@@ -73,6 +73,27 @@ class Unit extends Controller
         $this->twig->addGlobal("activeMenu", "roster");
         $this->addBreadcrumb("Roster", sprintf("/unit/%s/roster",
             $this->unit->slug()));
+
+        if ($this->canEdit) {
+            if (isset($_POST['csrf'])) {
+                if ($_POST['csrf'] !== \Nin\Nin::getSession('csrf_token')) {
+                    $this->displayError('Invalid token.');
+                    return false;
+                }
+            }
+
+            if (isset($_POST['delete'])) {
+                /** @var Member $mem */
+                $mem = Member::findByPk($_POST['idMember'] ?? 0);
+                if (!$mem || $mem->idUnit != $this->unit->idUnit) {
+                    $this->displayError('Invalid member.');
+                    return false;
+                }
+
+                $mem->remove();
+            }
+        }
+
         $this->render("unit.roster");
     }
 
