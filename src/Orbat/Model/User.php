@@ -64,4 +64,15 @@ class User extends \Orbat\Model
         return sprintf("https://cdn.discordapp.com/embed/avatars/%s.png", ($this->idUser >> 22) % 6);
 
     }
+
+    public function remove()
+    {
+        foreach ($this->sessions as $s) {
+            $s->remove();
+        }
+        foreach ($this->editableUnits as $ue) {
+            $ue->remove();
+        }
+        return parent::remove();
+    }
 }

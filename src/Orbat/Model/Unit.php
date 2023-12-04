@@ -79,4 +79,25 @@ class Unit extends \Orbat\Model
         return Snowflake::format($this->idUnit);
     }
 
+    public function remove()
+    {
+        foreach ($this->editors as $ed) {
+            $ed->remove();
+        }
+        foreach ($this->members as $m) {
+            $m->remove();
+        }
+        foreach ($this->ranks as $r) {
+            $r->remove();
+        }
+        foreach ($this->endorsements as $end) {
+            $end->remove();
+        }
+        foreach ($this->groups as $g) {
+            $g->remove();
+        }
+
+        return parent::remove();
+    }
+
 }

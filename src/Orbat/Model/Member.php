@@ -95,4 +95,12 @@ class Member extends \Orbat\Model
         );
     }
 
+    public function remove(): bool
+    {
+        foreach ($this->endorsements as $me) {
+            $me->remove();
+        }
+        return parent::remove();
+    }
+
 }

@@ -78,4 +78,15 @@ class Group extends \Orbat\Model
         }
     }
 
+    public function remove(): bool
+    {
+        foreach ($this->childs as $c) {
+            $c->parent = null;
+        }
+        foreach ($this->members as $m) {
+            $m->group = null;
+        }
+        return parent::remove();
+    }
+
 }

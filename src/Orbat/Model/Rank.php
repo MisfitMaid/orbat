@@ -8,6 +8,7 @@
 namespace Orbat\Model;
 
 use Carbon\Carbon;
+use Orbat\UserException;
 
 /**
  * @property int $idRank
@@ -38,6 +39,16 @@ class Rank extends \Orbat\Model
         return [
             'unit' => [BELONGS_TO, "Orbat\Model\Unit", 'idUnit'],
         ];
+    }
+
+    public function remove()
+    {
+        foreach ($this->unit->members as $m) {
+            if ($m->idRank == $this->idRank) {
+                throw new UserException("Cannot delete a rank in use! Change units to another rank and try again.");
+            }
+        }
+        return parent::remove();
     }
 
 }
