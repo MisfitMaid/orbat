@@ -73,7 +73,7 @@ class Unit extends \Orbat\Model
 
     public function slug(): string
     {
-        if (isset($this->slug) && is_string($this->slug)) {
+        if (isset($this->slug) && is_string($this->slug) && mb_strlen(trim($this->slug)) > 0) {
             return $this->slug;
         }
         return Snowflake::format($this->idUnit);
