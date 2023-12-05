@@ -41,7 +41,7 @@
                 </tr>
             </form>
         {% endfor %}
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             <input type="hidden" name="csrf" value="{{ csrf }}"/>
             <tr>
                 <td><input class="input" type="number" min="-32768" max="32767" name="weight" required="required"/></td>
