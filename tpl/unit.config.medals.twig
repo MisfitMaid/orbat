@@ -1,0 +1,66 @@
+{% extends "unit.config.twig" %}
+
+{% block configContent %}
+    <table class="table is-striped is-narrow is-hoverable is-fullwidth">
+        <thead>
+        <tr>
+            <th>Weight</th>
+            <th>Name</th>
+            <th colspan="2">Image (240x64)</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for medal in unit.medals %}
+            <form method="post" enctype="multipart/form-data">
+                <input type="hidden" name="csrf" value="{{ csrf }}"/>
+                <input type="hidden" name="idMedal" value="{{ medal.idMedal }}"/>
+                <tr>
+                    <td><input class="input" type="number" min="-32768" max="32767" name="weight" required="required" value="{{ medal.weight }}"/></td>
+                    <td><input class="input" type="text" maxlength="64" name="name" required="required" value="{{ medal.name }}"/></td>
+                    <td>
+                        {% if medal.image is defined %}
+                            {{ include('medalRibbonInline.twig') }}
+                        {% else %}
+                            (none)
+                        {% endif %}
+                    </td>
+                    <td>
+                        <div class="file">
+                            <label class="file-label">
+                                <input class="file-input" type="file" name="image" id="image" accept="image/png, image/jpeg"/>
+                                <span class="file-cta">
+                                        <span class="file-icon"><i class="fa fa-file-image-o"></i></span>
+                                        <span class="file-label">Image</span>
+                                    </span>
+                            </label>
+                        </div>
+                    </td>
+                    <td class="nowrap"><input class="button is-link" type="submit" name="medal_edit" value="Edit"/><input class="button is-danger" type="submit" name="medal_delete" value="Delete"/>
+                    </td>
+                </tr>
+            </form>
+        {% endfor %}
+        <form method="post">
+            <input type="hidden" name="csrf" value="{{ csrf }}"/>
+            <tr>
+                <td><input class="input" type="number" min="-32768" max="32767" name="weight" required="required"/></td>
+                <td><input class="input" type="text" maxlength="64" name="name" required="required"/></td>
+                <td></td>
+                <td>
+                    <div class="file">
+                        <label class="file-label">
+                            <input class="file-input" type="file" name="image" id="image" accept="image/png, image/jpeg"/>
+                            <span class="file-cta">
+                                <span class="file-icon"><i class="fa fa-file-image-o"></i></span>
+                                <span class="file-label">Image</span>
+                            </span>
+                        </label>
+                    </div>
+                </td>
+                <td><input class="button is-link" type="submit" name="medal_new" value="Create new award"/></td>
+            </tr>
+        </form>
+        </tbody>
+    </table>
+{% endblock %}

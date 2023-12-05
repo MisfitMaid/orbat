@@ -82,3 +82,10 @@ $fa-font-path: "/css/forkawesome/fonts";
   margin-top: initial;
   padding-top: initial;
 }
+
+.image {
+  &.is-120x32 {
+    width: 120px;
+    height: 32px;
+  }
+}

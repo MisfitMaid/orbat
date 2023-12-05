@@ -29,6 +29,7 @@ use Orbat\Snowflake;
  * @property Rank $rank
  * @property Group $group
  * @property MemberEndorsement[] $endorsements
+ * @property MemberMedal[] $medals
  */
 class Member extends \Orbat\Model
 {
@@ -58,6 +59,7 @@ class Member extends \Orbat\Model
             'rank' => [BELONGS_TO, "Orbat\Model\Rank", 'idRank'],
             'group' => [BELONGS_TO, "Orbat\Model\Group", 'idGroup'],
             'endorsements' => [HAS_MANY, "Orbat\Model\MemberEndorsement", 'idMember'],
+            'medals' => [HAS_MANY, "Orbat\Model\MemberMedal", 'idMember'],
         ];
     }
 
@@ -98,6 +100,9 @@ class Member extends \Orbat\Model
     public function remove(): bool
     {
         foreach ($this->endorsements as $me) {
+            $me->remove();
+        }
+        foreach ($this->medals as $me) {
             $me->remove();
         }
         return parent::remove();

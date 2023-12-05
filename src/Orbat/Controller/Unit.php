@@ -8,6 +8,7 @@ use Orbat\Controller;
 use Orbat\FileUtilities;
 use Orbat\Model\Endorsement;
 use Orbat\Model\Group;
+use Orbat\Model\Medal;
 use Orbat\Model\Member;
 use Orbat\Model\MemberEndorsement;
 use Orbat\Model\Rank;
@@ -305,6 +306,23 @@ class Unit extends Controller
         echo $av;
     }
 
+    public function actionMedalIcon($idMedal)
+    {
+        /** @var Medal $medal */
+        $medal = Medal::findByPk(Snowflake::parse($idMedal));
+        if (!$medal || $medal->idUnit != $this->unit->idUnit) {
+            $this->displayError("Invalid Medal ID");
+            return false;
+        }
+
+        $av = base64_decode($medal->image);
+
+        header("Content-Type: image/png");
+        header('Content-Length: ' . strlen($av));
+        header("Digest: sha256-" . base64_encode(hash("sha256", $av, true)));
+        echo $av;
+    }
+
     public function actionConfig()
     {
         $this->twig->addGlobal("activeMenu", "config");
@@ -442,6 +460,90 @@ class Unit extends Controller
 
             }
             $this->render("unit.config.ranks");
+        } else {
+            if (!Nin::user()) {
+                $this->redirect("/login");
+                return false;
+            }
+            $this->displayError("No permissions to edit unit", 403);
+        }
+    }
+
+    public function actionConfigMedals()
+    {
+        $this->twig->addGlobal("activeMenu", "config");
+        $this->addBreadcrumb("Configuration", sprintf("/unit/%s/config",
+            $this->unit->slug()));
+        if ($this->canEdit) {
+            if (isset($_POST['csrf'])) {
+                if ($_POST['csrf'] !== \Nin\Nin::getSession('csrf_token')) {
+                    $this->displayError('Invalid token.');
+                    return false;
+                }
+
+                $weight = (int)$_POST['weight'];
+                $name = trim($_POST['name']);
+
+                if (mb_strlen($name) == 0) {
+                    $this->displayError("name must not be empty");
+                    return false;
+                }
+
+                if (array_key_exists("medal_new", $_POST)) {
+                    $m = new Medal();
+                    $m->idUnit = $this->unit->idUnit;
+                    $m->idMedal = Snowflake::generate();
+                    $m->weight = $weight;
+                    $m->name = $name;
+
+                    if (array_key_exists('image', $_FILES)) {
+                        try {
+                            $m->image = FileUtilities::sanitizeUpload($_FILES['image'], 240, 64);
+                        } catch (\Exception $e) {
+                            $this->displayError($e->getMessage());
+                            return false;
+                        }
+                    }
+
+                    $m->save();
+                }
+
+                if (array_key_exists("medal_edit", $_POST)) {
+                    /** @var Medal $medal */
+                    $medal = Medal::findByPk($_POST['idMedal']);
+                    if (!$medal || $medal->idUnit != $this->unit->idUnit) {
+                        $this->displayError("Invalid Medal ID");
+                        return false;
+                    }
+
+                    $medal->weight = $weight;
+                    $medal->name = $name;
+
+                    if (array_key_exists('image', $_FILES)) {
+                        try {
+                            $medal->image = FileUtilities::sanitizeUpload($_FILES['image'], 240, 64);
+                        } catch (\Exception $e) {
+                            $this->displayError($e->getMessage());
+                            return false;
+                        }
+                    }
+
+                    $medal->save();
+                }
+
+                if (array_key_exists("rank_delete", $_POST)) {
+                    /** @var Medal $medal */
+                    $medal = Medal::findByPk($_POST['idMedal']);
+                    if (!$medal || $medal->idUnit != $this->unit->idUnit) {
+                        $this->displayError("Invalid Medal ID");
+                        return false;
+                    }
+                    $medal->remove();
+                }
+
+
+            }
+            $this->render("unit.config.medals");
         } else {
             if (!Nin::user()) {
                 $this->redirect("/login");

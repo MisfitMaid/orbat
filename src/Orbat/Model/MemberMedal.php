@@ -10,34 +10,32 @@ namespace Orbat\Model;
 use Carbon\Carbon;
 
 /**
- * @property int $idEndorsement
- * @property int $idUnit
- * @property int $weight
- * @property string $abbr
- * @property string $name
+ * @property int $idMemberMedal
+ * @property int $idMember
+ * @property int $idMedal
  * @property Carbon $dateCreated
  * @property Carbon $dateUpdated
  *
- * @property Unit $unit
- * @property MemberEndorsement $recipients
+ * @property Member $member
+ * @property Medal $medal
  */
-class Endorsement extends \Orbat\Model
+class MemberMedal extends \Orbat\Model
 {
     public static function tablename()
     {
-        return 'endorsements';
+        return 'members_medals';
     }
 
     public static function primarykey()
     {
-        return 'idEndorsement';
+        return 'idMemberMedal';
     }
 
     public function relations()
     {
         return [
-            'unit' => [BELONGS_TO, "Orbat\Model\Unit", 'idUnit'],
-            'recipients' => [HAS_MANY, "Orbat\Model\MemberEndorsement", 'idEndorsement']
+            'member' => [BELONGS_TO, "Orbat\Model\Member", 'idMember'],
+            'medal' => [BELONGS_TO, "Orbat\Model\Medal", 'idMedal']
         ];
     }
 

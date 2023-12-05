@@ -1,0 +1,20 @@
+<figure class="image is-120x32">
+    <img src="/unit/{{ medal.unit.slug() }}/medals/{{ medal.idMedal|snowflake }}/icon" alt="{{ medal.name }}"/>
+    <div class="is-overlay" style="pointer-events: none;">
+        <figure class="image is-120x32">
+            <img src="/img/ribbon-overlay.png" alt=""/>
+        </figure>
+    </div>
+    <div class="is-overlay level is-justify-content-space-evenly" style="pointer-events: none;">
+        {% if silvers is defined and silvers > 0 %}
+            {% for i in range(0, silvers) %}
+                <figure class="image is-16x16 level-item is-flex-grow-0"><img src="/img/device-silverstar.png" alt="+5"/></figure>
+            {% endfor %}
+        {% endif %}
+        {% if golds is defined and golds > 0 %}
+            {% for i in range(0, golds) %}
+                <figure class="image is-16x16 level-item is-flex-grow-0"><img src="/img/device-goldstar.png" alt="+1"/></figure>
+            {% endfor %}
+        {% endif %}
+    </div>
+</figure>

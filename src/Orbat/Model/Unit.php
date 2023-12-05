@@ -21,6 +21,7 @@ use Orbat\Snowflake;
  * @property UnitEditor[] $editors
  * @property Member[] $members
  * @property Rank[] $ranks
+ * @property Medal[] $medals
  * @property Endorsement[] $endorsements
  * @property Group[] $groups
  */
@@ -43,6 +44,7 @@ class Unit extends \Orbat\Model
             'members' => [HAS_MANY, "Orbat\Model\Member", 'idUnit'],
             'ranks' => [HAS_MANY, "Orbat\Model\Rank", 'idUnit', ['order' => 'asc', 'orderby' => 'weight']],
             'endorsements' => [HAS_MANY, "Orbat\Model\Endorsement", 'idUnit', ['order' => 'asc', 'orderby' => 'weight']],
+            'medals' => [HAS_MANY, "Orbat\Model\Medal", 'idUnit', ['order' => 'asc', 'orderby' => 'weight']],
             'groups' => [HAS_MANY, "Orbat\Model\Group", 'idUnit', ['order' => 'asc', 'orderby' => 'weight']],
         ];
     }
@@ -95,6 +97,9 @@ class Unit extends \Orbat\Model
         }
         foreach ($this->groups as $g) {
             $g->remove();
+        }
+        foreach ($this->medals as $med) {
+            $med->remove();
         }
 
         return parent::remove();
