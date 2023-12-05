@@ -33,19 +33,24 @@ namespace Orbat {
 
     nf_route("/units/create", "Orbat\Controller\Units.Create");
 
-    nf_route("/unit/:idUnit", "Orbat\Controller\Unit.Overview");
-    nf_route("/unit/:idUnit/roster", "Orbat\Controller\Unit.Roster");
-    nf_route("/unit/:idUnit/icon", "Orbat\Controller\Unit.Icon");
-    nf_route("/unit/:idUnit/ranks/:idRank/icon", "Orbat\Controller\Unit.RankIcon");
-    nf_route("/unit/:idUnit/medals/:idMedal/icon", "Orbat\Controller\Unit.MedalIcon");
-    nf_route("/unit/:idUnit/roster/:idMember", "Orbat\Controller\Unit.MemberAdd");
-    nf_route("/unit/:idUnit/operations", "Orbat\Controller\Unit.Operations");
-    nf_route("/unit/:idUnit/config", "Orbat\Controller\Unit.Config");
-    nf_route("/unit/:idUnit/config/ranks", "Orbat\Controller\Unit.ConfigRanks");
-    nf_route("/unit/:idUnit/config/medals", "Orbat\Controller\Unit.ConfigMedals");
-    nf_route("/unit/:idUnit/config/editors", "Orbat\Controller\Unit.ConfigEditors");
-    nf_route("/unit/:idUnit/config/groups", "Orbat\Controller\Unit.ConfigGroups");
-    nf_route("/unit/:idUnit/config/endorsements", "Orbat\Controller\Unit.ConfigEndorsements");
+    nf_route("/unit/:idUnit", "Orbat\Controller\UnitView.Overview");
+    nf_route("/unit/:idUnit/icon", "Orbat\Controller\UnitView.Icon");
+    nf_route("/unit/:idUnit/ranks/:idRank/icon", "Orbat\Controller\UnitView.RankIcon");
+    nf_route("/unit/:idUnit/medals/:idMedal/icon", "Orbat\Controller\UnitView.MedalIcon");
+
+    nf_route("/unit/:idUnit/roster", "Orbat\Controller\UnitRoster.Roster");
+    nf_route("/unit/:idUnit/roster/add", "Orbat\Controller\UnitRoster.MemberAdd");
+    nf_route("/unit/:idUnit/roster/:idMember", "Orbat\Controller\UnitRoster.MemberView");
+    nf_route("/unit/:idUnit/roster/:idMember/edit", "Orbat\Controller\UnitRoster.MemberAdd");
+
+    nf_route("/unit/:idUnit/operations", "Orbat\Controller\UnitOps.Operations");
+
+    nf_route("/unit/:idUnit/config", "Orbat\Controller\UnitConfig.Config");
+    nf_route("/unit/:idUnit/config/ranks", "Orbat\Controller\UnitConfig.ConfigRanks");
+    nf_route("/unit/:idUnit/config/medals", "Orbat\Controller\UnitConfig.ConfigMedals");
+    nf_route("/unit/:idUnit/config/editors", "Orbat\Controller\UnitConfig.ConfigEditors");
+    nf_route("/unit/:idUnit/config/groups", "Orbat\Controller\UnitConfig.ConfigGroups");
+    nf_route("/unit/:idUnit/config/endorsements", "Orbat\Controller\UnitConfig.ConfigEndorsements");
 
     $defaultConfig = [
         'name' => 'ORBAT',
