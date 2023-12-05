@@ -13,6 +13,7 @@ use Carbon\Carbon;
  * @property int $idMemberMedal
  * @property int $idMember
  * @property int $idMedal
+ * @property string $remarks
  * @property Carbon $dateCreated
  * @property Carbon $dateUpdated
  *
