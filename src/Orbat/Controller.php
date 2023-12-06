@@ -45,32 +45,6 @@ class Controller extends \Nin\Controller
         ]);
     }
 
-    /**
-     * do this in here to prevent nin's error handler from slurping away our exceptions?
-     */
-    public function setupSentry()
-    {
-
-        // dsn config is safe to commit i guess? https://docs.sentry.io/product/sentry-basics/dsn-explainer/#dsn-utilization
-        \Sentry\init([
-            'dsn' => 'https://940ff3052b67415b9fb42e0195198f26@o4503919061565440.ingest.sentry.io/4505489899978752',
-            'traces_sample_rate' => 1.0,
-            'profiles_sample_rate' => 1.0,
-            'environment' => php_sapi_name() == 'cli-server' ? 'dev' : 'prod',
-            'max_request_body_size' => 'always',
-            'enable_tracing' => true,
-        ]);
-
-        \Sentry\configureScope(function (\Sentry\State\Scope $scope): void {
-            if (Nin::user()) {
-                $scope->setUser([
-                    'id' => Nin::user()->idUser,
-                    'username' => Nin::user()->username
-                ]);
-            }
-        });
-    }
-
     public function renderPartial($view, $options = [])
     {
         return $this->twig->render($view . ".twig", $options);
