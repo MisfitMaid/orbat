@@ -36,9 +36,10 @@
                     <form method="post">
                         <input type="hidden" name="csrf" value="{{ csrf }}"/>
                         <input type="hidden" name="idMember" value="{{ member.idMember }}"/>
-                        <a class="button is-info" href="/unit/{{ unit.slug() }}/roster/{{ member.idMember|snowflake }}">Info</a>
+                        <a class="button is-info" href="/unit/{{ unit.slug() }}/roster/{{ member.idMember|snowflake }}"><span class="icon is-small"><i class="fa fa-info"></i></span></a>
+                        <a class="button is-info" href="/unit/{{ unit.slug() }}/roster/{{ member.idMember|snowflake }}/edit"><span class="icon is-small"><i class="fa fa-edit"></i></span></a>
                         {% if canEdit %}
-                            <input type="submit" class="button is-danger" name="delete" value="Delete"/>
+                            <button class="button is-danger" type="submit" name="delete"><span class="icon is-small"><i class="fa fa-trash"></i></span></button>
                         {% endif %}
                     </form>
                 </td>
