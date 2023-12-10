@@ -90,11 +90,11 @@ class Member extends \Orbat\Model
 
         $numhash = hash("crc32", $this->dateJoined->timestamp . $this->name);
 
-        return sprintf("%s-%s-%s",
+        return mb_strtoupper(sprintf("%s-%s-%s",
             Snowflake::format($this->idMember),
             $numhash,
-            mb_strtoupper($initials)
-        );
+            $initials
+        ));
     }
 
     public function remove(): bool
