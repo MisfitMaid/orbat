@@ -8,7 +8,7 @@
 use Orbat\DatabaseSessionHandler;
 
 require_once __DIR__ . '/vendor/autoload.php';
-include_once __DIR__ . '/nin/nf.php';
+require_once __DIR__ . '/nin/nf.php';
 
 date_default_timezone_set('UTC');
 define("TIME_INIT", microtime(true));

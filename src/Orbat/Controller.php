@@ -20,7 +20,7 @@ class Controller extends \Nin\Controller
 
     public function __construct()
     {
-        // $this->setupSentry();
+        $this->setupSentry();
         $loader = new \Twig\Loader\FilesystemLoader('tpl');
         $this->twig = new \Twig\Environment($loader, [
             'cache' => false,
@@ -43,6 +43,32 @@ class Controller extends \Nin\Controller
         $this->twig->addGlobal("uic", [
             'svgLogo' => file_get_contents("img/valkyrie.svg")
         ]);
+    }
+
+    /**
+     * do this in here to prevent nin's error handler from slurping away our exceptions?
+     */
+    public function setupSentry()
+    {
+
+        // dsn config is safe to commit i guess? https://docs.sentry.io/product/sentry-basics/dsn-explainer/#dsn-utilization
+        \Sentry\init([
+            'dsn' => 'https://e8b1a2b6ba7b583988659d96413dc5b1@o4503919061565440.ingest.sentry.io/4506370714566656',
+            'traces_sample_rate' => 1.0,
+            'profiles_sample_rate' => 1.0,
+            'environment' => php_sapi_name() == 'cli-server' ? 'dev' : 'prod',
+            'max_request_body_size' => 'always',
+            'enable_tracing' => true,
+        ]);
+
+        \Sentry\configureScope(function (\Sentry\State\Scope $scope): void {
+            if (Nin::user()) {
+                $scope->setUser([
+                    'id' => Nin::user()->idUser,
+                    'username' => Nin::user()->username
+                ]);
+            }
+        });
     }
 
     public function renderPartial($view, $options = [])
@@ -71,6 +97,5 @@ class Controller extends \Nin\Controller
     {
         $this->breadcrumb[] = ["text" => $title, "a" => $url];
     }
-
 
 }
