@@ -34,7 +34,7 @@
                 </a>
             </div>
 
-            <div class="navbar-menu">
+            <div class="navbar-menu is-active">
                 <div class="navbar-start">
                     {% if user %}
                         <nav class="navbar" role="navigation" aria-label="dropdown navigation">
@@ -62,7 +62,7 @@
                     {% endif %}
                 </div>
 
-                <div class="navbar-end">
+                <div class="navbar-end is-active">
                     {% if user %}
                         {{ include('userAvInline.twig', {user: user, classes: "navbar-item"}) }}
                         <a class="navbar-item" href="/logout">Log out</a>
