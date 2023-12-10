@@ -108,4 +108,16 @@ class Member extends \Orbat\Model
         return parent::remove();
     }
 
+    public function remarksMD(): string
+    {
+        global $mdParser;
+        return $mdParser->text($this->remarks);
+    }
+
+    public function remarksInternalMD(): string
+    {
+        global $mdParser;
+        return $mdParser->text($this->remarksInternal);
+    }
+
 }

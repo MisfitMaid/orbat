@@ -1,0 +1,34 @@
+{% extends "base.twig" %}
+
+{% block title %}{{ member.rank.abbr }} {{ member.name }}{% endblock title %}
+
+{% block content %}
+    <div class="box is-pulled-right content">
+        <p><strong>Played By:</strong> {{ member.playerName }}</p>
+        <p><strong>Assigned Role:</strong> {{ member.role }}</p>
+        <p><strong>Date Joined:</strong> {{ member.dateJoined.toDateString() }}</p>
+        <p><strong>Last Promotion:</strong> {{ member.dateLastPromotion.toDateString() }}</p>
+        <p><strong>Last page update:</strong> {{ member.dateUpdated.toDateString() }}</p>
+    </div>
+
+
+    <h2 class="title">Medals</h2>
+    (ribbon board todo)
+
+
+    <h2 class="title">Remarks</h2>
+    <div class="content">
+        {{ member.remarksMD()|raw }}
+    </div>
+
+    {% if canEdit %}
+        <h2 class="title">Editor-only remarks</h2>
+        <div class="content">
+            {{ member.remarksInternalMD()|raw }}
+        </div>
+    {% endif %}
+
+
+    <h2 class="title">Attendance</h2>
+    (todo)
+{% endblock %}

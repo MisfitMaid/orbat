@@ -53,8 +53,7 @@ class UnitRoster extends UnitBase
             return false;
         }
 
-        $this->dump($member);
-        $this->render("base");
+        $this->render("member.view", ['member' => $member]);
     }
 
     public function actionMemberAdd($idMember = null)
