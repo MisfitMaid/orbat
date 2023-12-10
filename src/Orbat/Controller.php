@@ -33,6 +33,10 @@ class Controller extends \Nin\Controller
         }));
         if (php_sapi_name() == 'cli-server') {
             $this->twig->addExtension(new \Twig\Extension\DebugExtension());
+        } else {
+            $this->twig->addFunction(new \Twig\TwigFunction('dump', function () {
+                return "";
+            }));
         }
 
         $this->twig->addFilter(new \Twig\TwigFilter('snowflake', function ($snow) {
