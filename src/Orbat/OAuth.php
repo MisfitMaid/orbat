@@ -19,7 +19,7 @@ class OAuth
         $this->provider = new Discord([
             'clientId' => nf_param('discord.id'),
             'clientSecret' => nf_param('discord.secret'),
-            'redirectUri' => PHP_SAPI == 'cli-server' ? 'http://localhost:8000/auth' : 'https://projectharvest.net/auth'
+            'redirectUri' => PHP_SAPI == 'cli-server' ? 'http://localhost:8000/auth' : 'https://orbat.misfitmaid.com/auth'
         ]);
     }
 
@@ -28,10 +28,5 @@ class OAuth
         $url = $this->provider->getAuthorizationUrl(['scope' => ['identify']]) . "&prompt=none";
         Nin::setSession('oauth2state', $this->provider->getState());
         return $url;
-    }
-
-    public function handleLogin()
-    {
-
     }
 }

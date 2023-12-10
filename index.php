@@ -52,6 +52,8 @@ namespace Orbat {
     nf_route("/unit/:idUnit/config/groups", "Orbat\Controller\UnitConfig.ConfigGroups");
     nf_route("/unit/:idUnit/config/endorsements", "Orbat\Controller\UnitConfig.ConfigEndorsements");
 
+    nf_route("/api/deploy", "Orbat\Controller\API.DeployWebsite");
+
     $defaultConfig = [
         'name' => 'ORBAT',
         'debug' => php_sapi_name() == 'cli-server' || file_exists(__DIR__ . "/DEBUG"),
