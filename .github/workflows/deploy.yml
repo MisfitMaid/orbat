@@ -1,0 +1,17 @@
+name: 'Deploy update'
+
+on:
+  push:
+    branches:
+      - mistress
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Secure Webhook
+        uses: navied/secure-webhook@0.2.1
+        with:
+          url: https://orbat.misfitmaid.com/api/deploy
+          data: '{ "this": "doesnt really matter lmao" }'
+          hmacSecret: ${{ secrets.DEPLOY_KEY }}
