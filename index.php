@@ -41,7 +41,7 @@ nf_route("/unit/:idUnit/medals/:idMedal/icon", "Orbat\Controller\UnitView.MedalI
 nf_route("/unit/:idUnit/roster", "Orbat\Controller\UnitRoster.Roster");
 nf_route("/unit/:idUnit/roster/add", "Orbat\Controller\UnitRoster.MemberAdd");
 nf_route("/unit/:idUnit/roster/:idMember", "Orbat\Controller\UnitRoster.MemberView");
-nf_route("/unit/:idUnit/roster/:idMember/edit", "Orbat\Controller\UnitRoster.MemberAdd");
+nf_route("/unit/:idUnit/roster/:idMember/edit", "Orbat\Controller\UnitRoster.MemberEdit");
 
 nf_route("/unit/:idUnit/operations", "Orbat\Controller\UnitOps.Operations");
 
