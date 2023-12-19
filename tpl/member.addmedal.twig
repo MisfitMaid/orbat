@@ -1,0 +1,66 @@
+{% extends "base.twig" %}
+
+{% block title %}Add medal - {{ member.rank.abbr }} {{ member.name }}{% endblock title %}
+
+{% block content %}
+    {% if canEdit %}
+        <form method="post">
+            <input type="hidden" name="csrf" value="{{ csrf }}">
+
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label" for="idMedal">Award</label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <div class="select">
+                            <select name="idMedal" id="idMedal" required="required">
+                                {% for medal in unit.medals %}
+                                    <option value="{{ medal.idMedal }}">{{ medal.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label" for="dateAwarded">Date Awarded</label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <div class="control">
+                            <input class="input" type="date" name="dateAwarded" id="dateAwarded" required="required" value=""/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label" for="remarks">Remarks (public)</label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <div class="control">
+                            <textarea class="textarea" id="remarks" name="remarks" maxlength="65535"></textarea>
+                        </div>
+                        <p class="help"><a href="https://commonmark.org/help/" target="_blank" rel="noreferrer">Markdown</a> is supported.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field is-horizontal">
+                <div class="field-label"></div>
+                <div class="field-body">
+                    <div class="field">
+                        <div class="control">
+                            <input class="button is-primary" type="submit" name="submit" value="Award medal">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    {% endif %}
+{% endblock %}

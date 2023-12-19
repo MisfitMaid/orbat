@@ -5,8 +5,10 @@ namespace Orbat\Controller;
 use Carbon\Carbon;
 use Orbat\Model\Endorsement;
 use Orbat\Model\Group;
+use Orbat\Model\Medal;
 use Orbat\Model\Member;
 use Orbat\Model\MemberEndorsement;
+use Orbat\Model\MemberMedal;
 use Orbat\Model\Rank;
 use Orbat\Snowflake;
 
@@ -52,6 +54,9 @@ class UnitRoster extends UnitBase
             $this->displayError("Invalid member");
             return false;
         }
+        $this->addBreadcrumb($member->name, sprintf("/unit/%s/roster/%s",
+            $this->unit->slug(),
+            Snowflake::format($member->idMember)));
 
         $this->render("member.view", ['member' => $member]);
     }
@@ -155,6 +160,9 @@ class UnitRoster extends UnitBase
                 $this->displayError("Invalid member");
                 return false;
             }
+            $this->addBreadcrumb($editMember->name, sprintf("/unit/%s/roster/%s",
+                $this->unit->slug(),
+                Snowflake::format($editMember->idMember)));
 
             if (isset($_POST['submit']) && isset($_POST['csrf'])) {
                 if ($_POST['csrf'] !== \Nin\Nin::getSession('csrf_token')) {
@@ -239,10 +247,6 @@ class UnitRoster extends UnitBase
                 return true;
             }
 
-            $this->addBreadcrumb($editMember->name, sprintf("/unit/%s/roster/%s",
-                $this->unit->slug(),
-                Snowflake::format($editMember->idMember)));
-
             $end = [];
             foreach ($editMember->endorsements as $me) {
                 if (!in_array($me->idEndorsement, $end)) {
@@ -251,6 +255,54 @@ class UnitRoster extends UnitBase
             }
             $config = ['member' => $editMember, 'form' => ['submit' => 'Edit Member', 'endorsements' => $end]];
             $this->render("member.edit", $config);
+        }
+    }
+
+    public function actionMemberAddMedal($idMember = null)
+    {
+        if ($this->requireEdit()) {
+            /** @var Member $editMember */
+            $editMember = Member::findByPk(Snowflake::parse($idMember));
+            if (!$editMember || $editMember->idUnit != $this->unit->idUnit) {
+                $this->displayError("Invalid member");
+                return false;
+            }
+            $this->addBreadcrumb($editMember->name, sprintf("/unit/%s/roster/%s",
+                $this->unit->slug(),
+                Snowflake::format($editMember->idMember)));
+
+            if (isset($_POST['submit']) && isset($_POST['csrf'])) {
+                if ($_POST['csrf'] !== \Nin\Nin::getSession('csrf_token')) {
+                    $this->displayError('Invalid token.');
+                    return false;
+                }
+
+                /** @var Medal $medal */
+                $medal = Medal::findByPk($_POST['idMedal'] ?? 0);
+                if (!$medal || $medal->idUnit != $this->unit->idUnit) {
+                    $this->displayError("Invalid medal");
+                    return false;
+                }
+
+                $award = new MemberMedal();
+                $award->idMedal = $medal->idMedal;
+                $award->idMember = $editMember->idMember;
+                $award->remarks = trim($_POST['remarks'] ?? "");
+                $award->dateAwarded = new Carbon($_POST['dateAwarded']);
+                $award->save();
+
+                $this->redirect(sprintf("/unit/%s/roster/%s",
+                    $this->unit->slug(),
+                    Snowflake::format($editMember->idMember)));
+                return true;
+            }
+
+            $this->addBreadcrumb("Award medal", sprintf("/unit/%s/roster/%s/medals/add",
+                $this->unit->slug(),
+                Snowflake::format($editMember->idMember)));
+
+            $config = ['member' => $editMember];
+            $this->render("member.addmedal", $config);
         }
     }
 }

@@ -7,7 +7,6 @@
 
 namespace Orbat\Controller;
 
-use Nin\ListViews\ModelListView;
 use Nin\Nin;
 use Orbat\Controller;
 use Orbat\OAuth;

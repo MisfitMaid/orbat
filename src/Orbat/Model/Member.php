@@ -120,4 +120,31 @@ class Member extends \Orbat\Model
         return $mdParser->text($this->remarksInternal);
     }
 
+    public function getMedalRenderData(): array
+    {
+        $medals = [];
+        foreach ($this->medals as $award) {
+            if (!array_key_exists($award->idMedal, $medals)) {
+                $medals[$award->idMedal] = ['count' => 0, 'medal' => $award->medal];
+            }
+            $medals[$award->idMedal]['count']++;
+        }
+
+        uasort($medals, function ($a, $b) {
+            return $a['medal']->weight <=> $b['medal']->weight;
+        });
+
+        $ret = [];
+        foreach ($medals as $id => $data) {
+            $totalstars = $data['count'] - 1;
+            $ret[$id] = [
+                'medal' => $data['medal'],
+                'silver' => floor($totalstars / 5),
+                'gold' => $totalstars % 5,
+                'total' => $data['count']
+            ];
+        }
+        return $ret;
+    }
+
 }

@@ -16,6 +16,7 @@ use Carbon\Carbon;
  * @property string $remarks
  * @property Carbon $dateCreated
  * @property Carbon $dateUpdated
+ * @property Carbon $dateAwarded
  *
  * @property Member $member
  * @property Medal $medal
@@ -38,6 +39,20 @@ class MemberMedal extends \Orbat\Model
             'member' => [BELONGS_TO, "Orbat\Model\Member", 'idMember'],
             'medal' => [BELONGS_TO, "Orbat\Model\Medal", 'idMedal']
         ];
+    }
+
+    public function beforeSave()
+    {
+        parent::beforeSave();
+
+        $this->dateAwarded = $this->dateAwarded->toDateString();
+    }
+
+    public function afterSave()
+    {
+        parent::afterSave();
+
+        $this->dateAwarded = new Carbon($this->dateAwarded);
     }
 
 }

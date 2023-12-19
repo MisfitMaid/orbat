@@ -50,7 +50,7 @@ class Model extends \Nin\Model implements \JsonSerializable
 
     public function __get($name)
     {
-        if (in_array($name, ['dateCreated', 'dateUpdated', 'dateJoined', 'dateLastPromotion'])) {
+        if (in_array($name, ['dateCreated', 'dateUpdated', 'dateJoined', 'dateLastPromotion', 'dateAwarded'])) {
             return new Carbon(parent::__get($name));
         } elseif (str_starts_with($name, "is")) {
             return (bool)parent::__get($name);

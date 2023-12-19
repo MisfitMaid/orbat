@@ -3,6 +3,10 @@
 {% block title %}{{ member.rank.abbr }} {{ member.name }}{% endblock title %}
 
 {% block content %}
+    {% if canEdit %}
+        <a class="button is-link" href="/unit/{{ unit.slug() }}/roster/{{ member.idMember|snowflake }}/edit">Edit</a>
+        <a class="button is-link" href="/unit/{{ unit.slug() }}/roster/{{ member.idMember|snowflake }}/medals/add">Add award</a>
+    {% endif %}
     <div class="box is-pulled-right content">
         <p><strong>Played By:</strong> {{ member.playerName }}</p>
         <p><strong>Assigned Role:</strong> {{ member.role }}</p>
@@ -12,8 +16,14 @@
     </div>
 
 
-    <h2 class="title">Medals</h2>
-    (ribbon board todo)
+    {% if member.medals|length > 0 %}
+        <h2 class="title">Medals</h2>
+        <div class="is-flex is-flex-wrap-wrap is-justify-content-center is-align-content-flex-start" style="max-width: 488px">
+            {% for medalinfo in member.getMedalRenderData() %}
+                {{ include('medalRibbonInline.twig', {medal: medalinfo.medal, golds: medalinfo.gold, silvers: medalinfo.silver, total: medalinfo.total}) }}
+            {% endfor %}
+        </div>
+    {% endif %}
 
 
     <h2 class="title">Remarks</h2>
