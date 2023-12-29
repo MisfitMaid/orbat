@@ -10,6 +10,7 @@ namespace Orbat\Controller;
 use Nin\Nin;
 use Orbat\Controller;
 use Orbat\OAuth;
+use Wohali\OAuth2\Client\Provider\Exception\DiscordIdentityProviderException;
 
 class User extends Controller
 {
@@ -56,9 +57,14 @@ class User extends Controller
             return;
         }
 
-        $token = $this->oauth->provider->getAccessToken('authorization_code', [
-            'code' => $code
-        ]);
+        try {
+            $token = $this->oauth->provider->getAccessToken('authorization_code', [
+                'code' => $code
+            ]);
+        } catch (DiscordIdentityProviderException $e) {
+            $this->displayError("Discord returned an error. Please try again or seek help. " . $e->getMessage(), 500);
+            return;
+        }
 
         // object(Wohali\OAuth2\Client\Provider\DiscordResourceOwner)[36]
         //  protected 'response' =>
