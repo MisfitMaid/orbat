@@ -44,14 +44,16 @@ class UnitConfig extends UnitBase
                 return false;
             }
 
-            if ($s == "") {
-                $this->unit->slug = null;
-            } else {
-                if (\Orbat\Model\Unit::countByAttributes(["slug" => $s]) > 0) {
-                    $this->displayError("slug already in use");
-                    return false;
+            if ($s != $this->unit->slug) {
+                if ($s == "") {
+                    $this->unit->slug = null;
+                } else {
+                    if (\Orbat\Model\Unit::countByAttributes(["slug" => $s]) > 0) {
+                        $this->displayError("slug already in use");
+                        return false;
+                    }
+                    $this->unit->slug = $s;
                 }
-                $this->unit->slug = $s;
             }
 
             if (mb_strlen($this->unit->name) == 0 || mb_strlen($this->unit->name) > 64) {
