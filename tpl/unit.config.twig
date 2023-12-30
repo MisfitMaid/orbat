@@ -42,13 +42,28 @@
                     </div>
 
                     <div class="field is-horizontal">
-                        <div class="field-label is-normal">
-                            <label class="label" for="slug">Slug</label>
-                        </div>
+                        <div class="field-label is-normal"><label class="label" for="slug">Slug</label></div>
                         <div class="field-body">
-                            <div class="field">
-                                <div class="control">
-                                    <input class="input" type="text" name="slug" id="slug" required="required" value="{% if unit.slug is defined %}{{ unit.slug }}{% endif %}"/>
+                            <div class="field is-expanded">
+                                <div class="field has-addons">
+                                    <div class="control"><a class="button is-static">orbat.misfitmaid.com/unit/</a></div>
+                                    <div class="control is-expanded">
+                                        <input class="input" type="text" name="slug" id="slug" value="{% if unit.slug is defined %}{{ unit.slug }}{% endif %}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal"><label class="label" for="discordInvite">Discord</label></div>
+                        <div class="field-body">
+                            <div class="field is-expanded">
+                                <div class="field has-addons">
+                                    <div class="control"><a class="button is-static">discord.gg/</a></div>
+                                    <div class="control is-expanded">
+                                        <input class="input" type="text" name="discordInvite" id="discordInvite" value="{% if unit.discordInvite is defined %}{{ unit.discordInvite }}{% endif %}"/>
+                                    </div>
                                 </div>
                             </div>
                         </div>

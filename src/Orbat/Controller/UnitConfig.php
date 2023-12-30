@@ -56,6 +56,8 @@ class UnitConfig extends UnitBase
                 }
             }
 
+            $this->unit->discordInvite = trim($_POST['discordInvite'] ?? null);
+
             if (mb_strlen($this->unit->name) == 0 || mb_strlen($this->unit->name) > 64) {
                 $this->displayError("Name is required, please try again", 400);
                 return false;

@@ -15,6 +15,7 @@ use Orbat\Snowflake;
  * @property string $name
  * @property ?string $icon
  * @property ?string $slug
+ * @property ?string $discordInvite
  * @property Carbon $dateCreated
  * @property Carbon $dateUpdated
  *
